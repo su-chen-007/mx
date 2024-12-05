@@ -1,7 +1,7 @@
 
 ## 平台简介
 
-mx平台采取了开源ruoyi框架
+mx平台采取了开源的ruoyi框架
 
 * 前端采用Vue、Element UI。
 * 后端采用Spring Boot、Spring Security、Redis & Jwt。
@@ -32,7 +32,7 @@ mx平台采取了开源ruoyi框架
 
 ## 在线体验
 
-- admin/admin123
+账户密码：admin/admin123
 文档地址：http://doc.ruoyi.vip
 
 ## 演示图
@@ -65,9 +65,5 @@ mx平台采取了开源ruoyi框架
 	<tr>
         <td><img src="https://oscimg.oschina.net/oscnet/up-d4fe726319ece268d4746602c39cffc0621.png"/></td>
         <td><img src="https://oscimg.oschina.net/oscnet/up-c195234bbcd30be6927f037a6755e6ab69c.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/b6115bc8c31de52951982e509930b20684a.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-5e4daac0bb59612c5038448acbcef235e3a.png"/></td>
     </tr>
 </table>
