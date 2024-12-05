@@ -2,15 +2,25 @@
 ## 平台简介
 
 mx平台采取了开源的ruoyi框架
-
 * 前端采用Vue、Element UI。
 * 后端采用Spring Boot、Spring Security、Redis & Jwt。
 * 权限认证使用Jwt，支持多终端认证系统。
 * 支持加载动态权限菜单，多方式轻松权限控制。
 * 高效率开发，使用代码生成器可以一键生成前后端代码。
 
-## 内置功能
 
+## 后端启动须知
+1. 需要先启动好数据库，redis
+2. 需要修改ruoyi-admin目录下的配置包含（数据库连接，日志位置）
+3. 直接启动RuoYiApplication即可
+
+## 前端端启动须知
+1. 需要先下载相关依赖，在ruoyi-ui目录下执行命令 npm install --registry=https://registry.npmmirror.com
+2. 然后执行 npm run dev
+3. 访问 http://localhost:80
+
+
+## 内置功能
 1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
 2.  部门管理：配置系统组织机构（公司、部门、小组），树结构展现支持数据权限。
 3.  岗位管理：配置系统用户所属担任职务。
@@ -31,12 +41,10 @@ mx平台采取了开源的ruoyi框架
 18. 连接池监视：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
 
 ## 在线体验
-
 账户密码：admin/admin123
 文档地址：http://doc.ruoyi.vip
 
 ## 演示图
-
 <table>
     <tr>
         <td><img src="https://oscimg.oschina.net/oscnet/cd1f90be5f2684f4560c9519c0f2a232ee8.jpg"/></td>
