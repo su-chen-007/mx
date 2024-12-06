@@ -14,7 +14,7 @@ mx平台采取了开源的ruoyi框架
 2. 需要修改ruoyi-admin目录下的配置包含（数据库连接，日志位置）
 3. 直接启动RuoYiApplication即可
 
-## 前端端启动须知
+## 前端启动须知
 1. 需要先下载相关依赖，在ruoyi-ui目录下执行命令 npm install --registry=https://registry.npmmirror.com
 2. 然后执行 npm run dev
 3. 访问 http://localhost:80
