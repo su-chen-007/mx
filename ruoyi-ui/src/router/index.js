@@ -42,8 +42,18 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/preLogin',
+    component: () => import('@/views/PreLogin.vue'),
+    hidden: true
+  },
+  {
     path: '/login',
     component: () => import('@/views/login'),
+    hidden: true
+  },
+  {
+    path: '/test',
+    component: () => import('@/views/PreLogin.vue'),
     hidden: true
   },
   {
