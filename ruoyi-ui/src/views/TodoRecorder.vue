@@ -1,3 +1,6 @@
+/* 第一个自主的待办组件 可复用于任何页面 原创@苏辰 */
+/* 1大小随意拖拽 2本地缓存所有数据 刷新不丢失 3自定义颜色 4 支持图片背景*/
+
 <template>
   <div
     class="todo-container"
@@ -10,7 +13,10 @@
       left: position.left + 'px',
       width: containerWidth + 'px',
       height: containerHeight + 'px',
-      backgroundColor: containerColor
+      backgroundColor: containerColor,
+      backgroundImage: backgroundImage ? `url(${backgroundImage})` : '',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
     }"
     ref="container"
   >
@@ -19,15 +25,24 @@
         type="text"
         class="header-input"
         v-model="containerName"
-      @input="saveState"
-      placeholder="自定义待办组件名"
+        @input="saveState"
+        placeholder="自定义待办组件名"
       />
-      <button class="color-change-btn" @click="showColorPicker = true">背景颜色选择</button>
+      <!-- 颜色选择按钮 -->
+      <button class="color-change-btn" @click="showColorPicker = true;">背景颜色选择</button>
       <chrome-picker
         v-if="showColorPicker"
         v-model="containerColor"
         class="color-picker"
         @input="colorChanged"
+      />
+      <!-- 上传图片背景按钮 -->
+      <button class="background-change-btn" @click="triggerFileInput">上传背景图片</button>
+      <input
+        type="file"
+        ref="backgroundImageInput"
+        style="display: none"
+        @change="setBackgroundImage"
       />
     </div>
     <input
@@ -60,12 +75,9 @@
     </ul>
   </div>
 </template>
-
 <script>
 import { Chrome } from 'vue-color';
 
-/* 第一个自主的待办组件 可复用于任何页面 原创@苏辰 */
-/* 1大小随意拖拽 2本地缓存所有数据 刷新不丢失 3自定义颜色 */
 export default {
   components: {
     'chrome-picker': Chrome
@@ -89,6 +101,8 @@ export default {
       resizeStartX: 0,
       resizeStartY: 0,
       showColorPicker: false,
+      showImageUpload: false,
+      backgroundImage: '' // 存储背景图片的URL
     };
   },
   methods: {
@@ -154,8 +168,26 @@ export default {
     },
     colorChanged(color) {
       this.containerColor = color.hex;
-      this.showColorPicker = false;
+      this.backgroundImage = null; // 重置背景图片
+      this.showColorPicker = false; // Close color picker after choosing color
       this.saveState();
+    },
+    triggerFileInput() {
+      // 触发文件输入框点击事件
+      this.$refs.backgroundImageInput.click();
+    },
+    setBackgroundImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.backgroundImage = e.target.result;
+          this.containerColor = '#f0f0f0'; // 选择图片背景时重置颜色为默认值
+          this.showImageUpload = false; // 关闭文件输入
+          this.saveState();
+        };
+        reader.readAsDataURL(file);
+      }
     },
     saveState() {
       localStorage.setItem('containerName', this.containerName);
@@ -165,6 +197,7 @@ export default {
       localStorage.setItem('positionTop', this.position.top);
       localStorage.setItem('positionLeft', this.position.left);
       localStorage.setItem('todos', JSON.stringify(this.todos));
+      localStorage.setItem('backgroundImage', this.backgroundImage);
     },
     restoreState() {
       this.containerName = localStorage.getItem('containerName') || 'My Todo List';
@@ -174,6 +207,7 @@ export default {
       this.position.top = parseInt(localStorage.getItem('positionTop')) || 0;
       this.position.left = parseInt(localStorage.getItem('positionLeft')) || 0;
       this.todos = JSON.parse(localStorage.getItem('todos')) || [];
+      this.backgroundImage = localStorage.getItem('backgroundImage') || '';
     }
   },
   mounted() {
@@ -261,5 +295,9 @@ button {
   right: 0;
   transform: translateY(-50%);
   z-index: 10;
+}
+
+.background-image-input {
+  display: none; /* Hide the file input */
 }
 </style>
