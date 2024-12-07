@@ -20,9 +20,9 @@
         class="header-input"
         v-model="containerName"
       @input="saveState"
-      placeholder="Enter component name"
+      placeholder="自定义待办组件名"
       />
-      <button class="color-change-btn" @click="showColorPicker = true">Change Color</button>
+      <button class="color-change-btn" @click="showColorPicker = true">背景颜色选择</button>
       <chrome-picker
         v-if="showColorPicker"
         v-model="containerColor"
@@ -35,7 +35,7 @@
       class="todo-input"
       v-model="newTodo"
       @keyup.enter="addTodo"
-      placeholder="Add a new todo"
+      placeholder="来添加你今日的待办 添加完按回车"
     />
     <div class="resize-handle" @mousedown="resizeStart"></div>
     <ul>
@@ -44,9 +44,9 @@
       >
         <template v-if="!todo.editing">
           {{ todo.text }}
-          <button @click="editTodo(index)">Edit</button>
-          <button @click="completeTodo(index)">Complete</button>
-          <button @click="deleteTodo(index)">Delete</button>
+          <button @click="editTodo(index)">修改</button>
+          <button @click="completeTodo(index)">标记完成</button>
+          <button @click="deleteTodo(index)">删除</button>
         </template>
         <template v-else>
           <input
