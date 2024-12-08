@@ -33,6 +33,8 @@ import ImageUpload from "@/components/ImageUpload"
 import ImagePreview from "@/components/ImagePreview"
 // 字典标签组件
 import DictTag from '@/components/DictTag'
+// 大小
+import WebPreviewer from './components/WebPreviewer';
 // 头部标签组件
 import VueMeta from 'vue-meta'
 // 字典数据组件
@@ -57,6 +59,7 @@ Vue.component('Editor', Editor)
 Vue.component('FileUpload', FileUpload)
 Vue.component('ImageUpload', ImageUpload)
 Vue.component('ImagePreview', ImagePreview)
+Vue.component('web-previewer', WebPreviewer);
 
 Vue.use(directive)
 Vue.use(plugins)

@@ -1,20 +1,29 @@
 <template>
   <div>
-    <div id="app" class="app-container">
-      <TodoRecorder></TodoRecorder>
+    <div >
+      <h1>时间组件</h1>
+      <MyDate></MyDate>
     </div>
     <div class="pre-login-container">
       <h1>欢迎来到mx前台页面</h1>
       <button @click="goToLogin">前往mx后台页面</button>
     </div>
+    <div class="pre-login-container">
+      <TodoRecorder></TodoRecorder>
+    </div>
+    <div class="pre-login-container">
+      <web-previewer></web-previewer>
+    </div>
   </div>
 </template>
 <script>
 import TodoRecorder from './TodoRecorder.vue';
+import MyDate from './MyDate.vue';
 
 export default {
   components: {
-    TodoRecorder
+    TodoRecorder,
+    MyDate
   },
   name: 'PreLogin',
   methods: {
@@ -25,18 +34,12 @@ export default {
 };
 </script>
 <style>
-/* 待办事项记录器容器的样式 */
-.app-container {
-  margin-bottom: 200px; /* 添加下边距 */
-}
 
-/* 预登录页面容器的样式 */
+/* 页面容器的样式 */
 .pre-login-container {
   text-align: center;
-  margin-top: 200px; /* 添加上边距 */
+  margin-top: 300px; /* 添加上边距 */
+  margin-bottom: 50px;
 }
 
-.pre-login-container h1 {
-  margin-bottom: 20px;
-}
 </style>

@@ -222,7 +222,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 .todo-container {
   position: absolute;
   border: 1px solid #ccc;
