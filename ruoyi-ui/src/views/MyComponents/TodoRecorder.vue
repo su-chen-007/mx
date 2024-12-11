@@ -1,31 +1,10 @@
-/* 第一个自主的待办组件 可复用于任何页面 原创@苏辰 */
-/* 1大小随意拖拽 2本地缓存所有数据 刷新不丢失 3自定义颜色 4 支持图片背景*/
-
 <template>
-  <div
-    class="todo-container"
-    @mousedown="dragStart"
-    @mouseup="dragEnd"
-    @mouseleave="dragEnd"
-    @mousemove="dragging"
-    :style="{
-      top: position.top + 'px',
-      left: position.left + 'px',
-      width: containerWidth + 'px',
-      height: containerHeight + 'px',
-      backgroundColor: containerColor,
-      backgroundImage: backgroundImage ? `url(${backgroundImage})` : '',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center'
-    }"
-    ref="container"
-  >
+  <div class="todo-container" :style="{ backgroundColor: containerColor, backgroundImage: backgroundImage ? `url(${backgroundImage})` : '' }">
     <div class="header">
       <input
         type="text"
         class="header-input"
         v-model="containerName"
-        @input="saveState"
         placeholder="自定义待办组件名"
       />
       <!-- 颜色选择按钮 -->
@@ -52,7 +31,6 @@
       @keyup.enter="addTodo"
       placeholder="来添加你今日的待办 添加完按回车"
     />
-    <div class="resize-handle" @mousedown="resizeStart"></div>
     <ul>
       <li v-for="(todo, index) in todos" :key="index"
           :class="{ completed: todo.completed }"
@@ -75,6 +53,7 @@
     </ul>
   </div>
 </template>
+
 <script>
 import { Chrome } from 'vue-color';
 
@@ -87,63 +66,12 @@ export default {
       newTodo: '',
       todos: [],
       containerName: 'My Todo List',
-      containerColor: '#f0f0f0',
-      containerWidth: 300,
-      containerHeight: 300,
-      position: {
-        top: 0,
-        left: 0
-      },
-      dragging: false,
-      startX: 0,
-      startY: 0,
-      resize: false,
-      resizeStartX: 0,
-      resizeStartY: 0,
+      containerColor: '#0000FF', // 默认蓝色背景
       showColorPicker: false,
-      showImageUpload: false,
       backgroundImage: '' // 存储背景图片的URL
     };
   },
   methods: {
-    dragStart(event) {
-      this.dragging = true;
-      this.startX = event.clientX;
-      this.startY = event.clientY;
-    },
-    dragging(event) {
-      if (this.dragging) {
-        const deltaX = event.clientX - this.startX;
-        const deltaY = event.clientY - this.startY;
-        this.position.left += deltaX;
-        this.position.top += deltaY;
-        this.startX = event.clientX;
-        this.startY = event.clientY;
-        this.saveState(); // Save immediately when dragging
-      }
-    },
-    dragEnd() {
-      this.dragging = false;
-    },
-    resizeStart(event) {
-      this.resize = true;
-      this.resizeStartX = event.clientX;
-      this.resizeStartY = event.clientY;
-    },
-    resizeMove(event) {
-      if (this.resize) {
-        const deltaX = event.clientX - this.resizeStartX;
-        const deltaY = event.clientY - this.resizeStartY;
-        this.containerWidth += deltaX;
-        this.containerHeight += deltaY;
-        this.resizeStartX = event.clientX;
-        this.resizeStartY = event.clientY;
-        this.saveState(); // Save immediately when resizing
-      }
-    },
-    resizeEnd() {
-      this.resize = false;
-    },
     addTodo() {
       if (this.newTodo.trim() !== '') {
         this.todos.push({
@@ -159,7 +87,7 @@ export default {
       this.todos[index].editing = true;
     },
     completeTodo(index) {
-      this.todos[index].completed = true;
+      this.todos[index].completed = !this.todos[index].completed;
       this.saveState();
     },
     deleteTodo(index) {
@@ -168,69 +96,62 @@ export default {
     },
     colorChanged(color) {
       this.containerColor = color.hex;
-      this.backgroundImage = null; // 重置背景图片
-      this.showColorPicker = false; // Close color picker after choosing color
+      this.backgroundImage = ''; // 选择颜色时重置背景图片
+      this.showColorPicker = false;
       this.saveState();
     },
     triggerFileInput() {
-      // 触发文件输入框点击事件
       this.$refs.backgroundImageInput.click();
     },
     setBackgroundImage(event) {
       const file = event.target.files[0];
       if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.backgroundImage = e.target.result;
-          this.containerColor = '#f0f0f0'; // 选择图片背景时重置颜色为默认值
-          this.showImageUpload = false; // 关闭文件输入
-          this.saveState();
-        };
-        reader.readAsDataURL(file);
+        // 使用 URL.createObjectURL 创建文件的URL
+        this.backgroundImage = URL.createObjectURL(file);
+        this.containerColor = ''; // 选择图片背景时重置颜色
+        this.showColorPicker = false;
+        this.saveState();
       }
     },
     saveState() {
       localStorage.setItem('containerName', this.containerName);
       localStorage.setItem('containerColor', this.containerColor);
-      localStorage.setItem('containerWidth', this.containerWidth);
-      localStorage.setItem('containerHeight', this.containerHeight);
-      localStorage.setItem('positionTop', this.position.top);
-      localStorage.setItem('positionLeft', this.position.left);
       localStorage.setItem('todos', JSON.stringify(this.todos));
       localStorage.setItem('backgroundImage', this.backgroundImage);
     },
     restoreState() {
       this.containerName = localStorage.getItem('containerName') || 'My Todo List';
-      this.containerColor = localStorage.getItem('containerColor') || '#f0f0f0';
-      this.containerWidth = parseInt(localStorage.getItem('containerWidth')) || 300;
-      this.containerHeight = parseInt(localStorage.getItem('containerHeight')) || 300;
-      this.position.top = parseInt(localStorage.getItem('positionTop')) || 0;
-      this.position.left = parseInt(localStorage.getItem('positionLeft')) || 0;
+      this.containerColor = localStorage.getItem('containerColor') || '#0000FF'; // 默认蓝色背景
       this.todos = JSON.parse(localStorage.getItem('todos')) || [];
       this.backgroundImage = localStorage.getItem('backgroundImage') || '';
     }
   },
   mounted() {
     this.restoreState();
-    document.addEventListener('mousemove', this.resizeMove);
-    document.addEventListener('mouseup', this.resizeEnd);
   },
   beforeDestroy() {
-    document.removeEventListener('mousemove', this.resizeMove);
-    document.removeEventListener('mouseup', this.resizeEnd);
+    // 释放背景图片的URL
+    if (this.backgroundImage.startsWith('blob:')) {
+      URL.revokeObjectURL(this.backgroundImage);
+    }
   },
 };
 </script>
 
-<style >
+<style scoped>
 .todo-container {
-  position: absolute;
   border: 1px solid #ccc;
   padding: 10px;
   box-sizing: border-box;
-  cursor: move;
+  cursor: default;
   overflow: auto;
-  background-color: #f0f0f0; /* Default background color */
+  width: 590px; /* 固定宽度 */
+  height: 400px; /* 固定高度 */
+  margin: 10px; /* 添加外边距 */
+  position: relative; /* 为背景图片定位 */
+  background-size: cover; /* 确保背景图片覆盖整个容器 */
+  background-position: center; /* 确保背景图片居中显示 */
+  background-repeat: no-repeat; /* 防止背景图片重复 */
 }
 
 .header {
@@ -253,16 +174,6 @@ export default {
   margin-bottom: 10px;
 }
 
-.resize-handle {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 10px;
-  height: 10px;
-  background-color: #aaa;
-  cursor: se-resize;
-}
-
 ul {
   list-style: none;
   padding: 0;
@@ -283,7 +194,6 @@ button {
 }
 
 .color-change-btn {
-  background: none;
   border: 1px solid #ccc;
   padding: 5px 10px;
   cursor: pointer;
@@ -295,9 +205,5 @@ button {
   right: 0;
   transform: translateY(-50%);
   z-index: 10;
-}
-
-.background-image-input {
-  display: none; /* Hide the file input */
 }
 </style>

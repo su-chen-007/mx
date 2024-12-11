@@ -2,17 +2,17 @@
   <div class="calendar" :style="{ backgroundColor: 'beige', width: '100%', height: 'auto', padding: '20px' }">
     <header :style="{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }">
       <button @click="prevMonth">&lt;</button>
-      <h2>{{ year }}年{{ month + 1 }}月</h2>
+      <h2>{{ year }}年{{ month + 1 }}月{{ date }}日 {{ hours }}:{{ minutes }}:{{ seconds }}</h2>
       <button @click="nextMonth">&gt;</button>
     </header>
     <div class="weekdays" :style="{ display: 'flex' }">
       <div v-for="day in weekdays" :key="day" :style="{ width: '14.28%', textAlign: 'center', padding: '10px', border: '1px solid #ddd' }">{{ day }}</div>
     </div>
     <div class="days-grid" :style="{ display: 'flex', flexWrap: 'wrap', marginTop: '10px' }">
-      <div v-for="n in 6" :key="`empty-${n}`" v-if="n <= emptyDaysAtStart" :style="{ width: '14.28%', textAlign: 'center', padding: '10px', border: '1px solid #ddd', margin: '5px' }"></div>
-      <div v-for="day in daysInMonth" :key="day" :class="{ today: isToday(day), 'has-festival': hasFestival(day) }" @click="selectDay(day)" :style="{ width: '14.28%', textAlign: 'center', padding: '10px', border: '1px solid #ddd', margin: '5px' }">
+      <div v-for="n in emptyDaysAtStart" :key="`empty-${n}`" :style="{ width: '14.28%', textAlign: 'center', padding: '10px', border: '1px solid #ddd', margin: '5px' }"></div>
+      <div v-for="day in daysInMonth" :key="day" :class="{ today: isToday(day), 'has-festival': hasFestival(day) }" @click="selectDay(day)" :style="{ width: '14.28%', textAlign: 'center', padding: '10px', border: '1px solid #ddd', margin: '0px' }">
         {{ day }}
-        <div v-if="hasFestival(day)" class="festival" :style="{ position: 'absolute', bottom: '0', fontSize: '0.8em', color: 'white' }">{{ getFestival(day) }}</div>
+        <div v-if="hasFestival(day)" class="festival" :style="{ position: 'absolute', bottom: '0', fontSize: '0.8em', color: 'blue' }">{{ getFestival(day) }}</div>
         <div v-if="isToday(day)" class="today-circle"></div>
       </div>
     </div>
@@ -29,11 +29,23 @@ export default {
     return {
       year: moment().year(),
       month: moment().month(),
-      weekdays: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      date: moment().date(),
+      hours: moment().hours(),
+      minutes: moment().minutes(),
+      seconds: moment().seconds(),
       daysInMonth: [],
       emptyDaysAtStart: 0,
-      today: moment().format('DD')
+      today: moment().format('DD'),
+      selectedDay: null
     };
+  },
+  computed: {
+    weekdays() {
+      const startDay = moment([this.year, this.month]).startOf('month').day();
+      let weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+      weekdays = weekdays.slice(startDay).concat(weekdays.slice(0, startDay));
+      return weekdays;
+    }
   },
   methods: {
     prevMonth() {
@@ -53,15 +65,12 @@ export default {
       this.generateCalendarData();
     },
     generateCalendarData() {
-      const startDayOfMonth = moment([this.year, this.month]).startOf('month').day();
-      this.emptyDaysAtStart = startDayOfMonth ? 7 - startDayOfMonth : 0;
+      this.emptyDaysAtStart = moment([this.year, this.month]).startOf('month').day();
       const daysInMonth = moment([this.year, this.month]).endOf('month').date();
       this.daysInMonth = Array.from({ length: daysInMonth }, (_, i) => i + 1);
     },
     isToday(day) {
-      console.log("today:"+this.today.replace('0', ''));
-      console.log("day:"+day.toString());
-      return this.today.replace('0', '') === day.toString();
+      return this.today === day.toString();
     },
     hasFestival(day) {
       const lunarDate = lunar.Solar.fromDate(new Date(this.year, this.month, day));
@@ -77,6 +86,15 @@ export default {
   },
   mounted() {
     this.generateCalendarData();
+    this.interval = setInterval(() => {
+      this.date = moment().date();
+      this.hours = moment().hours();
+      this.minutes = moment().minutes();
+      this.seconds = moment().seconds();
+    }, 1000);
+  },
+  beforeDestroy() {
+    clearInterval(this.interval);
   }
 };
 </script>
@@ -96,7 +114,7 @@ header {
 }
 .today {
   background-color: #ff9999; /* Light red background for today's date */
-  color: #fff; /* White text color */
+  color: #113ab4; /* White text color */
 }
 .has-festival {
   /* Your styles here */
@@ -107,7 +125,7 @@ header {
   position: absolute;
   bottom: 0;
   font-size: 0.8em;
-  color: white;
+  color: blue; /* Changed to blue */
 }
 .today-circle {
   display: inline-block;
