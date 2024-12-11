@@ -1,9 +1,10 @@
 <template>
-  <div class="container">
+  <div class="container" :style="{ backgroundImage: `url(${globalBackgroundImage})` }">
     <!-- 居中的横线和按钮 -->
     <div class="horizontal-line">
       <div class="button-container">
-        <button @click="toggleModal">MX</button>
+        <button class="global-button"  @click="toggleModal">MX</button>
+        <button class="global-button"  @click="triggerBackgroundUpload">BG</button>
       </div>
     </div>
 
@@ -27,25 +28,14 @@
 
     <!-- 动态添加的组件 -->
     <transition-group name="component-list" tag="div" class="components-container">
-      <div
-        v-for="(comp, index) in components"
-        :key="comp.id"
-        class="component-wrapper"
-      >
-        <component
-          :is="comp.component"
-          :image="comp.image"
-          class="component"
-          @delete-component="removeComponent(index)"
-        />
+      <div v-for="(comp, index) in components" :key="comp.id" class="component-wrapper">
+        <component :is="comp.component" :image="comp.image" class="component" @delete-component="removeComponent(index)" />
         <button class="delete-button" @click="removeComponent(index)">X</button>
       </div>
     </transition-group>
 
-    <!-- 备案信息 -->
-    <footer class="footer">
-      <a href="http://beian.miit.gov.cn" target="_blank">关于MX 域名备案编号：XXXXXX</a>
-    </footer>
+    <!-- 文件输入用于上传全局背景 -->
+    <input type="file" @change="setGlobalBackgroundImage" style="display: none;" ref="globalBackgroundInput" />
   </div>
 </template>
 
@@ -54,7 +44,6 @@ import TodoRecorder from './MyComponents/TodoRecorder.vue';
 import MyDate from './MyComponents/MyDate.vue';
 import WebPreviewer from './MyComponents/WebPreviewer.vue';
 import Www from './MyComponents/Www.vue';
-
 
 export default {
   components: {
@@ -74,7 +63,9 @@ export default {
         require('@/assets/images/mycomponent/Www.png')
       ],
       componentNames: ['时间组件', '待办组件', '网页多开组件', '网址收藏组件'],
-      nextId: 0
+      nextId: 0,
+      showGlobalBackgroundModal: false,
+      globalBackgroundImage: ''
     };
   },
   methods: {
@@ -96,7 +87,6 @@ export default {
       this.saveLayout();
     },
     getComponentByName(name) {
-      console.log(name);
       switch (name) {
         case '时间组件':
           return MyDate;
@@ -110,20 +100,23 @@ export default {
           return null;
       }
     },
-    saveLayout() {
-      const layout = JSON.stringify(this.components);
-      localStorage.setItem('userLayout', layout);
+    triggerBackgroundUpload() {
+      this.$refs.globalBackgroundInput.click();
     },
-    restoreLayout() {
-      const layout = localStorage.getItem('userLayout');
-      console.log(layout);
-      if (layout) {
-        const restoredComponents = JSON.parse(layout);
-        this.components = restoredComponents.map(comp => ({
-          ...comp,
-          component: this.getComponentByImageName(comp.image)
-        }));
+    setGlobalBackgroundImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.globalBackgroundImage = e.target.result;
+          this.saveLayout();
+        };
+        reader.readAsDataURL(file);
       }
+    },
+    saveLayout() {
+      localStorage.setItem('userLayout', JSON.stringify(this.components));
+      localStorage.setItem('globalBackgroundImage', this.globalBackgroundImage);
     },
     getComponentByImageName(name){
       console.log(name);
@@ -139,6 +132,17 @@ export default {
         default:
           return null;
       }
+    },
+    restoreLayout() {
+      const layout = localStorage.getItem('userLayout');
+      if (layout) {
+        const restoredComponents = JSON.parse(layout);
+        this.components = restoredComponents.map(comp => ({
+          ...comp,
+          component: this.getComponentByImageName(comp.image)
+        }));
+      }
+      this.globalBackgroundImage = localStorage.getItem('globalBackgroundImage') || '';
     }
   },
   created() {
@@ -148,11 +152,23 @@ export default {
 </script>
 
 <style scoped>
+
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+}
+
+.global-button {
+  padding: 10px 20px; /* 统一按钮内边距 */
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 10px; /* 按钮之间的外边距 */
+  border: 1px solid #ccc; /* 按钮边框 */
+  border-radius: 5px; /* 圆角边框 */
+  background-color: #f0f0f0; /* 按钮背景色 */
 }
 
 .horizontal-line {
@@ -251,6 +267,7 @@ button {
 .component {
   margin-bottom: 10px;
 }
+
 .delete-button {
   position: absolute;
   top: 0;
@@ -284,5 +301,17 @@ button {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
+}
+
+.global-background-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
 }
 </style>
