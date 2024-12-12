@@ -7,6 +7,8 @@
         <button class="global-button"  @click="triggerBackgroundUpload">BG</button>
       </div>
     </div>
+    <Top></Top>
+
 
     <!-- 图片组件列表模态框 -->
     <transition name="modal">
@@ -14,8 +16,11 @@
         <div class="modal-content">
           <span class="close" @click="toggleModal">&times;</span>
           <div class="store-title">MX组件商店</div>
+          <button class="tab-button" @click="setActiveTab('all')" :class="{ active: activeTab === 'all' }">全部组件</button>
+          <button class="tab-button" @click="setActiveTab('normal')" :class="{ active: activeTab === 'normal' }">普通组件</button>
+          <button class="tab-button" @click="setActiveTab('ai')" :class="{ active: activeTab === 'ai' }">AI组件</button>
           <ul class="image-list">
-            <li v-for="(image, index) in images" :key="index" @click="addComponent(index)">
+            <li v-for="(image, index) in images" :key="index" v-if="shouldShowComponent(index, activeTab)" @click="addComponent(index)">
               <div class="image-and-name">
                 <span class="component-name">{{ componentNames[index] }}</span>
                 <img :src="image" alt="Image" />
@@ -44,13 +49,15 @@ import TodoRecorder from './MyComponents/TodoRecorder.vue';
 import MyDate from './MyComponents/MyDate.vue';
 import WebPreviewer from './MyComponents/WebPreviewer.vue';
 import Www from './MyComponents/Www.vue';
+import Top from './MyComponents/Top.vue';
 
 export default {
   components: {
     TodoRecorder,
     MyDate,
     WebPreviewer,
-    Www
+    Www,
+    Top
   },
   data() {
     return {
@@ -65,10 +72,18 @@ export default {
       componentNames: ['时间组件', '待办组件', '网页多开组件', '网址收藏组件'],
       nextId: 0,
       showGlobalBackgroundModal: false,
-      globalBackgroundImage: ''
+      globalBackgroundImage: '',
+      activeTab: 'all'
     };
   },
   methods: {
+    shouldShowComponent(index) {
+      const allTab = this.activeTab === 'all';
+      const isNormalTab = this.activeTab === 'normal';
+      const isAITab = this.activeTab === 'ai';
+      return (allTab && ['时间组件', '待办组件', '网页多开组件', '网址收藏组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件'].includes(this.componentNames[index])) ||
+        (isAITab && this.componentNames[index] === '网址收藏组件');
+    },
     toggleModal() {
       this.showModal = !this.showModal;
     },
@@ -119,7 +134,6 @@ export default {
       localStorage.setItem('globalBackgroundImage', this.globalBackgroundImage);
     },
     getComponentByImageName(name){
-      console.log(name);
       switch (name) {
         case '/static/img/MyDate.a7c4de4f.png':
           return MyDate;
@@ -132,6 +146,11 @@ export default {
         default:
           return null;
       }
+    },
+    setActiveTab(tab) {
+      this.activeTab = tab;
+      console.log("这是一个标签");
+      // 这里可以添加逻辑来根据激活的标签过滤显示组件列表
     },
     restoreLayout() {
       const layout = localStorage.getItem('userLayout');
@@ -314,4 +333,22 @@ button {
   justify-content: center;
   align-items: center;
 }
+
+.tab-button {
+  display: inline-block;
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  border-radius: 50%; /* 圆形按钮 */
+  background-color: #f8c8dc; /* 粉色背景 */
+  cursor: pointer;
+  transition: transform 0.3s; /* 添加点击时的动画效果 */
+}
+
+.tab-button.active {
+  background-color: #d51313; /* 激活标签的背景色 */
+  color: #e7e2e2; /* 激活标签的文字色 */
+}
+
+
 </style>

@@ -66,7 +66,7 @@ export default {
       newTodo: '',
       todos: [],
       containerName: 'My Todo List',
-      containerColor: '#0000FF', // 默认蓝色背景
+      containerColor: '#ea74b6', // 默认蓝色背景
       showColorPicker: false,
       backgroundImage: '' // 存储背景图片的URL
     };
@@ -121,7 +121,7 @@ export default {
     },
     restoreState() {
       this.containerName = localStorage.getItem('containerName') || 'My Todo List';
-      this.containerColor = localStorage.getItem('containerColor') || '#0000FF'; // 默认蓝色背景
+      this.containerColor = localStorage.getItem('containerColor') || '#ea74b6'; // 默认蓝色背景
       this.todos = JSON.parse(localStorage.getItem('todos')) || [];
       this.backgroundImage = localStorage.getItem('backgroundImage') || '';
     }
