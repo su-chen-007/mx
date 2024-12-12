@@ -92,7 +92,6 @@ export default {
   height: 100px;
   overflow: hidden;
   transition: transform 0.3s ease;
-  background-color: var(--color);
 }
 
 .bookmark:hover {
