@@ -1,6 +1,6 @@
 <template>
   <div class="ranking-list">
-    <button @click="toggleDropdown">选择榜单</button>
+    <button @click="toggleDropdown">{{ currentRankingName }}</button>
     <div v-if="showDropdown" class="dropdown">
       <ul>
         <li @click="selectRanking('weibo')">微博榜单</li>
@@ -25,8 +25,9 @@ export default {
       showDropdown: false,
       rankings: [],
       currentRanking: 'weibo',
-      weiboApiUrl: 'https://proxy.cors.sh/https://zj.v.api.aa1.cn/api/weibo-rs?ranking=${ranking}', // 微博热搜API URL
-      douyinApiUrl: 'https://proxy.cors.sh/https://v.api.aa1.cn/api/douyin-hot/index.php', // 抖音热榜API URL
+      currentRankingName: '选择榜单', // 新增变量存储当前选中的榜单名称
+      weiboApiUrl: 'https://proxy.cors.sh/https://zj.v.api.aa1.cn/api/weibo-rs?ranking=${ranking}',
+      douyinApiUrl: 'https://proxy.cors.sh/https://v.api.aa1.cn/api/douyin-hot/index.php',
     };
   },
   methods: {
@@ -36,6 +37,9 @@ export default {
     selectRanking(ranking) {
       this.currentRanking = ranking;
       this.showDropdown = false;
+      this.currentRankingName = ranking === 'weibo' ? '微博榜单' :
+        ranking === 'douyin' ? '抖音榜单' :
+          ranking === '自定义' ? '自定义榜单' : '选择榜单';
       if (ranking === 'weibo') {
         this.fetchWeiboRankings(ranking);
       } else if (ranking === 'douyin') {
@@ -44,8 +48,6 @@ export default {
       // 其他榜单的请求逻辑...
     },
     fetchWeiboRankings(ranking) {
-      this.currentRanking = ranking;
-      this.showDropdown = false;
       const apiUrl = `https://zj.v.api.aa1.cn/api/weibo-rs?ranking=${ranking}`;
       const proxyUrl = `https://proxy.cors.sh/${apiUrl}`;
       fetch(proxyUrl)
@@ -71,16 +73,13 @@ export default {
           return response.text(); // 获取响应的HTML文本
         })
         .then(text => {
-          console.log("1"+text);
-
           const jsonRegex = /<script[^>]*>(.*?)<\/script>.*?<script[^>]*>(.*?)<\/script>.*?(\{.*\})/s;
           const match = text.match(jsonRegex);
           // 尝试解析JSON
           const data = JSON.parse(match[3]);
-          console.log("3"+data.data.word_list);
           this.rankings = data.data.word_list.map(item => ({
             word: item.word,
-            url: "https://www.douyin.com/root/search/"+item.word
+            url: `https://www.douyin.com/root/search/${item.word}`
           }));
         })
         .catch(error => {
@@ -94,8 +93,8 @@ export default {
 <style scoped>
 .ranking-list {
   background-color: #2fc7b5;
-  width: 350px; /* 增加宽度 */
-  height: 400px; /* 增加高度 */
+  width: 350px;
+  height: 400px;
   overflow: auto;
   padding: 10px;
   box-sizing: border-box;
@@ -138,25 +137,24 @@ export default {
 }
 
 .ranking-number {
-  width: 50px; /* 固定编号宽度 */
+  width: 50px;
   font-weight: bold;
 }
 
 .ranking-info {
   flex-grow: 1;
-  white-space: nowrap; /* 不允许文字跨行 */
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* 超出部分显示省略号 */
-  font-size: 14px; /* 减小字体大小 */
+  text-overflow: ellipsis;
+  font-size: 14px;
+  transition: color 0.3s; /* 添加过渡效果 */
 }
 
-.ranking-link {
-  font-size: 14px; /* 减小字体大小 */
-  color: #007bff; /* 链接颜色 */
-  text-decoration: none; /* 去掉下划线 */
+.ranking-info:hover {
+  color: #0056b3; /* 鼠标悬停时改变颜色 */
 }
 
-.ranking-link:hover {
-  text-decoration: underline; /* 鼠标悬停时显示下划线 */
+button {
+  cursor: pointer;
 }
 </style>

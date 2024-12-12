@@ -7,9 +7,6 @@
         <button class="global-button"  @click="triggerBackgroundUpload">BG</button>
       </div>
     </div>
-    <Top></Top>
-
-
     <!-- 图片组件列表模态框 -->
     <transition name="modal">
       <div class="modal" v-if="showModal">
@@ -67,9 +64,10 @@ export default {
         require('@/assets/images/mycomponent/MyDate.png'),
         require('@/assets/images/mycomponent/TodoRecorder.png'),
         require('@/assets/images/mycomponent/WebPreviewer.png'),
-        require('@/assets/images/mycomponent/Www.png')
+        require('@/assets/images/mycomponent/Www.png'),
+        require('@/assets/images/mycomponent/Top.png')
       ],
-      componentNames: ['时间组件', '待办组件', '网页多开组件', '网址收藏组件'],
+      componentNames: ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件'],
       nextId: 0,
       showGlobalBackgroundModal: false,
       globalBackgroundImage: '',
@@ -81,7 +79,7 @@ export default {
       const allTab = this.activeTab === 'all';
       const isNormalTab = this.activeTab === 'normal';
       const isAITab = this.activeTab === 'ai';
-      return (allTab && ['时间组件', '待办组件', '网页多开组件', '网址收藏组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件'].includes(this.componentNames[index])) ||
+      return (allTab && ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件', '自定榜单组件'].includes(this.componentNames[index])) ||
         (isAITab && this.componentNames[index] === '网址收藏组件');
     },
     toggleModal() {
@@ -111,6 +109,8 @@ export default {
           return WebPreviewer;
         case '网址收藏组件':
           return Www;
+        case '自定榜单组件':
+          return Top;
         default:
           return null;
       }
@@ -134,6 +134,7 @@ export default {
       localStorage.setItem('globalBackgroundImage', this.globalBackgroundImage);
     },
     getComponentByImageName(name){
+      console.log(name);
       switch (name) {
         case '/static/img/MyDate.a7c4de4f.png':
           return MyDate;
@@ -143,13 +144,15 @@ export default {
           return WebPreviewer;
         case '/static/img/Www.bd16945a.png':
           return Www;
+        case '/static/img/Top.2aa5dde6.png':
+          return Top;
         default:
           return null;
       }
     },
     setActiveTab(tab) {
+      console.log(tab);
       this.activeTab = tab;
-      console.log("这是一个标签");
       // 这里可以添加逻辑来根据激活的标签过滤显示组件列表
     },
     restoreLayout() {
