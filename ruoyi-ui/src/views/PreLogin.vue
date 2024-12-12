@@ -1,5 +1,5 @@
 <template>
-  <div class="container" :style="{ backgroundImage: `url(${globalBackgroundImage})` }">
+  <div class="container" :style="{ backgroundImage: globalBackgroundImage ? `url(${globalBackgroundImage})` : '' }">
     <!-- 居中的横线和按钮 -->
     <div class="horizontal-line">
       <div class="button-container">
@@ -47,6 +47,7 @@ import MyDate from './MyComponents/MyDate.vue';
 import WebPreviewer from './MyComponents/WebPreviewer.vue';
 import Www from './MyComponents/Www.vue';
 import Top from './MyComponents/Top.vue';
+import Search from './MyComponents/Search.vue';
 
 export default {
   components: {
@@ -54,7 +55,8 @@ export default {
     MyDate,
     WebPreviewer,
     Www,
-    Top
+    Top,
+    Search
   },
   data() {
     return {
@@ -65,9 +67,10 @@ export default {
         require('@/assets/images/mycomponent/TodoRecorder.png'),
         require('@/assets/images/mycomponent/WebPreviewer.png'),
         require('@/assets/images/mycomponent/Www.png'),
-        require('@/assets/images/mycomponent/Top.png')
+        require('@/assets/images/mycomponent/Top.png'),
+        require('@/assets/images/mycomponent/Search.png')
       ],
-      componentNames: ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件'],
+      componentNames: ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件'],
       nextId: 0,
       showGlobalBackgroundModal: false,
       globalBackgroundImage: '',
@@ -79,7 +82,7 @@ export default {
       const allTab = this.activeTab === 'all';
       const isNormalTab = this.activeTab === 'normal';
       const isAITab = this.activeTab === 'ai';
-      return (allTab && ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件', '自定榜单组件'].includes(this.componentNames[index])) ||
+      return (allTab && ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件', '自定榜单组件'].includes(this.componentNames[index])) ||
         (isAITab && this.componentNames[index] === '网址收藏组件');
     },
     toggleModal() {
@@ -111,6 +114,8 @@ export default {
           return Www;
         case '自定榜单组件':
           return Top;
+        case '搜索组件':
+          return Search;
         default:
           return null;
       }
@@ -121,12 +126,8 @@ export default {
     setGlobalBackgroundImage(event) {
       const file = event.target.files[0];
       if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.globalBackgroundImage = e.target.result;
+          this.globalBackgroundImage = URL.createObjectURL(file);
           this.saveLayout();
-        };
-        reader.readAsDataURL(file);
       }
     },
     saveLayout() {
@@ -147,7 +148,7 @@ export default {
         case '/static/img/Top.2aa5dde6.png':
           return Top;
         default:
-          return null;
+          return Search;
       }
     },
     setActiveTab(tab) {
