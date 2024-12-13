@@ -7,10 +7,12 @@
         <button class="global-button"  @click="triggerBackgroundUpload">BG</button>
       </div>
     </div>
+
     <!-- 图片组件列表模态框 -->
     <transition name="modal">
       <div class="modal" v-if="showModal">
         <div class="modal-content">
+          <div v-if="showToast" class="toast">{{ toastMessage }}</div>
           <span class="close" @click="toggleModal">&times;</span>
           <div class="store-title">MX组件商店</div>
           <button class="tab-button" @click="setActiveTab('all')" :class="{ active: activeTab === 'all' }">全部组件</button>
@@ -49,6 +51,7 @@ import Www from './MyComponents/Www.vue';
 import Top from './MyComponents/Top.vue';
 import Search from './MyComponents/Search.vue';
 import MyJson from './MyComponents/MyJson.vue';
+import MyCalculator from './MyComponents/MyCalculator.vue';
 
 export default {
   components: {
@@ -58,10 +61,13 @@ export default {
     Www,
     Top,
     Search,
-    MyJson
+    MyJson,
+    MyCalculator
   },
   data() {
     return {
+      toastMessage: '',
+      showToast: false,
       showModal: false,
       components: [],
       images: [
@@ -71,9 +77,10 @@ export default {
         require('@/assets/images/mycomponent/Www.png'),
         require('@/assets/images/mycomponent/Top.png'),
         require('@/assets/images/mycomponent/Search.png'),
-        require('@/assets/images/mycomponent/MyJson.png')
+        require('@/assets/images/mycomponent/MyJson.png'),
+        require('@/assets/images/mycomponent/fh.png')
       ],
-      componentNames: ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件'],
+      componentNames: ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件', '计算器组件'],
       nextId: 0,
       showGlobalBackgroundModal: false,
       globalBackgroundImage: '',
@@ -85,7 +92,7 @@ export default {
       const allTab = this.activeTab === 'all';
       const isNormalTab = this.activeTab === 'normal';
       const isAITab = this.activeTab === 'ai';
-      return (allTab && ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件', '自定榜单组件', 'Json解析组件'].includes(this.componentNames[index])) ||
+      return (allTab && ['时间组件', '搜索组件', '计算器组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', 'Json解析组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件', '自定榜单组件', 'Json解析组件'].includes(this.componentNames[index])) ||
         (isAITab && this.componentNames[index] === '网址收藏组件');
     },
     toggleModal() {
@@ -100,6 +107,11 @@ export default {
         image: this.images[index]
       });
       this.saveLayout();
+      this.toastMessage = "mx组件添加成功";
+      this.showToast = true;
+      setTimeout(() => {
+        this.showToast = false;
+      }, 1000); // 1秒后隐藏提示
     },
     removeComponent(index) {
       this.components.splice(index, 1);
@@ -121,6 +133,8 @@ export default {
           return Search;
         case 'Json解析组件':
           return MyJson;
+        case '计算器组件':
+          return MyCalculator;
         default:
           return null;
       }
@@ -150,10 +164,14 @@ export default {
           return WebPreviewer;
         case '/static/img/Www.bd16945a.png':
           return Www;
+        case '/static/img/Top.2aa5dde6.png':
+          return Top;
         case '/static/img/Search.0b5baaf8.png':
           return Search;
         case '/static/img/MyJson.68d583e1.png':
           return MyJson;
+        case '/static/img/fh.280509b4.png':
+          return MyCalculator;
         default:
           return Search;
       }
@@ -362,6 +380,17 @@ button {
 .tab-button.active {
   background-color: #d51313; /* 激活标签的背景色 */
   color: #e7e2e2; /* 激活标签的文字色 */
+}
+
+.toast {
+  position: fixed;
+  top: 50%;
+  justify-content: center;
+  align-items: center;
+  background-color: #2fc7b5;
+  color: #e6efef;
+  border-radius: 10%;
+  z-index: 9999; /* 确保提示在最上面 */
 }
 
 

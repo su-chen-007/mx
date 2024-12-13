@@ -7,7 +7,7 @@
       class="vue-json-component"
       v-if="showJsonTree"
       v-model="formattedJson"
-      :mode="'tree'"
+      :mode="'code'"
       :show-btns="false"
       :expandedOnStart="true"
       @json-change="onJsonChange"
