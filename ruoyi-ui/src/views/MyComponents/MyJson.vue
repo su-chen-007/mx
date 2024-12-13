@@ -27,21 +27,26 @@ export default {
     return {
       inputJson: '',
       formattedJson: null,
-      showJsonTree: true // 控制JSON树显示与隐藏的属性
+      showJsonTree: false // 控制JSON树显示与隐藏的属性
     };
   },
   methods: {
     formatJson() {
+      if(this.inputJson ===null){
+        alert('输入为空 请检查');
+        return;
+      }
       try {
         this.showJsonTree = true // 控制JSON树显示与隐藏的属性
         this.formattedJson = JSON.parse(this.inputJson);
       } catch (e) {
         alert('无效的json请检查格式');
+        this.showJsonTree = false // 控制JSON树显示与隐藏的属性
         this.formattedJson = null;
       }
     },
     toggleJsonTree() {
-      this.showJsonTree = !this.showJsonTree; // 切换JSON树的显示状态
+      this.showJsonTree = false; // 切换JSON树的显示状态
       this.inputJson = null;
       this.formattedJson = null;
     },
@@ -56,7 +61,7 @@ export default {
 .json-editor-container {
   width: 800px; /* 设置固定宽度 */
   height: 1600px; /* 设置固定高度 */
-  margin: 30px auto;
+  margin: auto;
   overflow: hidden; /* 隐藏溢出的内容 */
   position: relative; /* 相对定位 */
 }
@@ -64,7 +69,7 @@ export default {
 textarea {
   width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: auto;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
@@ -77,7 +82,7 @@ textarea {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-right: 5px; /* Add space between buttons */
+  margin-right: auto; /* Add space between buttons */
 }
 
 .format-btn:hover,
@@ -92,7 +97,7 @@ textarea {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-top: 10px;
+  margin-top: auto;
 }
 
 ::v-deep .jsoneditor-vue .jsoneditor-outer {
