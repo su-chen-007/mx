@@ -48,6 +48,7 @@ import WebPreviewer from './MyComponents/WebPreviewer.vue';
 import Www from './MyComponents/Www.vue';
 import Top from './MyComponents/Top.vue';
 import Search from './MyComponents/Search.vue';
+import MyJson from './MyComponents/MyJson.vue';
 
 export default {
   components: {
@@ -56,7 +57,8 @@ export default {
     WebPreviewer,
     Www,
     Top,
-    Search
+    Search,
+    MyJson
   },
   data() {
     return {
@@ -68,9 +70,10 @@ export default {
         require('@/assets/images/mycomponent/WebPreviewer.png'),
         require('@/assets/images/mycomponent/Www.png'),
         require('@/assets/images/mycomponent/Top.png'),
-        require('@/assets/images/mycomponent/Search.png')
+        require('@/assets/images/mycomponent/Search.png'),
+        require('@/assets/images/mycomponent/MyJson.png')
       ],
-      componentNames: ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件'],
+      componentNames: ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件'],
       nextId: 0,
       showGlobalBackgroundModal: false,
       globalBackgroundImage: '',
@@ -82,7 +85,7 @@ export default {
       const allTab = this.activeTab === 'all';
       const isNormalTab = this.activeTab === 'normal';
       const isAITab = this.activeTab === 'ai';
-      return (allTab && ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件', '自定榜单组件'].includes(this.componentNames[index])) ||
+      return (allTab && ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件', '自定榜单组件', 'Json解析组件'].includes(this.componentNames[index])) ||
         (isAITab && this.componentNames[index] === '网址收藏组件');
     },
     toggleModal() {
@@ -116,6 +119,8 @@ export default {
           return Top;
         case '搜索组件':
           return Search;
+        case 'Json解析组件':
+          return MyJson;
         default:
           return null;
       }
@@ -145,8 +150,10 @@ export default {
           return WebPreviewer;
         case '/static/img/Www.bd16945a.png':
           return Www;
-        case '/static/img/Top.2aa5dde6.png':
-          return Top;
+        case '/static/img/Search.0b5baaf8.png':
+          return Search;
+        case '/static/img/MyJson.68d583e1.png':
+          return MyJson;
         default:
           return Search;
       }
@@ -233,7 +240,10 @@ button {
   padding: 20px;
   border-radius: 5px;
   width: 80%;
-  max-width: 600px;
+  height: 350px; /* 固定高度 */
+  max-height: 350px; /* 最大高度 */
+  max-width: 900px; /* 最大宽度 */
+  overflow-y: auto; /* 垂直方向上的滚动条 */
   margin: 20px;
 }
 
