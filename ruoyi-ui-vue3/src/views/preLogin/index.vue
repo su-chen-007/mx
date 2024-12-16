@@ -19,10 +19,10 @@
           <button class="tab-button" @click="setActiveTab('normal')" :class="{ active: activeTab === 'normal' }">普通组件</button>
           <button class="tab-button" @click="setActiveTab('ai')" :class="{ active: activeTab === 'ai' }">AI组件</button>
           <ul class="image-list">
-            <li v-for="(image, index) in images" :key="index" v-if="shouldShowComponent(index, activeTab)" @click="addComponent(index)">
+            <li v-for="image in images"  @click="addComponent(image.id)" >
               <div class="image-and-name">
-                <span class="component-name">{{ componentNames[index] }}</span>
-                <img :src="image" alt="Image" />
+                <span class="component-name">{{ image.name }}</span>
+                <img :src="image.url" alt="Image" />
               </div>
             </li>
           </ul>
@@ -71,24 +71,16 @@ export default {
       showModal: false,
       components: [],
       images: [
-        '@/assets/images/mycomponent/MyDate.png',
-        '@/assets/images/mycomponent/TodoRecorder.png',
-        '@/assets/images/mycomponent/WebPreviewer.png',
-        '@/assets/images/mycomponent/Www.png',
-        '@/assets/images/mycomponent/Top.png',
-        '@/assets/images/mycomponent/Search.png',
-        '@/assets/images/mycomponent/MyJson.png',
-        '@/assets/images/mycomponent/fh.png'
-        // require('@/assets/images/mycomponent/MyDate.png'),
-        // require('@/assets/images/mycomponent/TodoRecorder.png'),
-        // require('@/assets/images/mycomponent/WebPreviewer.png'),
-        // require('@/assets/images/mycomponent/Www.png'),
-        // require('@/assets/images/mycomponent/Top.png'),
-        // require('@/assets/images/mycomponent/Search.png'),
-        // require('@/assets/images/mycomponent/MyJson.png'),
-        // require('@/assets/images/mycomponent/fh.png')
+        { id: 0, url: '/src/assets/images/mycomponent/TodoRecorder.png',name:'待办组件' },
+        { id: 1, url: '/src/assets/images/mycomponent/MyDate.png',name:'时间组件' },
+        { id: 2, url: '/src/assets/images/mycomponent/WebPreviewer.png',name:'网页多开组件' },
+        { id: 3, url: '/src/assets/images/mycomponent/Www.png',name:'网址收藏组件' },
+        { id: 4, url: '/src/assets/images/mycomponent/Top.png',name:'自定榜单组件' },
+        { id: 5, url: '/src/assets/images/mycomponent/Search.png',name:'搜索组件' },
+        { id: 6, url: '/src/assets/images/mycomponent/MyJson.png',name:'Json解析组件' },
+        { id: 7, url: '/src/assets/images/mycomponent/fh.png',name:'计算器组件' }
       ],
-      componentNames: ['时间组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件', '计算器组件'],
+      componentNames: [ '待办组件', '时间组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件', '计算器组件'],
       nextId: 0,
       showGlobalBackgroundModal: false,
       globalBackgroundImage: '',
@@ -162,23 +154,23 @@ export default {
       localStorage.setItem('globalBackgroundImage', this.globalBackgroundImage);
     },
     getComponentByImageName(name){
-      console.log(name);
-      switch (name) {
-        case '/static/img/MyDate.a7c4de4f.png':
+      console.log(name.url);
+      switch (name.url) {
+        case '/src/assets/images/mycomponent/MyDate.png':
           return MyDate;
-        case '/static/img/TodoRecorder.f063fe7f.png':
+        case '/src/assets/images/mycomponent/TodoRecorder.png':
           return TodoRecorder;
-        case '/static/img/WebPreviewer.078da9d2.png':
+        case '/src/assets/images/mycomponent/WebPreviewer.png':
           return WebPreviewer;
-        case '/static/img/Www.bd16945a.png':
+        case '/src/assets/images/mycomponent/Www.png':
           return Www;
-        case '/static/img/Top.2aa5dde6.png':
+        case '/src/assets/images/mycomponent/Top.png':
           return Top;
-        case '/static/img/Search.0b5baaf8.png':
+        case '/src/assets/images/mycomponent/Search.png':
           return Search;
-        case '/static/img/MyJson.68d583e1.png':
+        case '/src/assets/images/mycomponent/MyJson.png':
           return MyJson;
-        case '/static/img/fh.280509b4.png':
+        case '/src/assets/images/mycomponent/fh.png':
           return MyCalculator;
         default:
           return Search;
@@ -187,6 +179,34 @@ export default {
     setActiveTab(tab) {
       console.log(tab);
       this.activeTab = tab;
+      if(tab==='all'){
+        this.images=[
+          { id: 0, url: '/src/assets/images/mycomponent/TodoRecorder.png',name:'待办组件' },
+          { id: 1, url: '/src/assets/images/mycomponent/MyDate.png',name:'时间组件' },
+          { id: 2, url: '/src/assets/images/mycomponent/WebPreviewer.png',name:'网页多开组件' },
+          { id: 3, url: '/src/assets/images/mycomponent/Www.png',name:'网址收藏组件' },
+          { id: 4, url: '/src/assets/images/mycomponent/Top.png',name:'自定榜单组件' },
+          { id: 5, url: '/src/assets/images/mycomponent/Search.png',name:'搜索组件' },
+          { id: 6, url: '/src/assets/images/mycomponent/MyJson.png',name:'Json解析组件' },
+          { id: 7, url: '/src/assets/images/mycomponent/fh.png',name:'计算器组件' }
+        ]
+      }
+      if(tab==='ai'){
+        this.images=[
+          { id: 6, url: '/src/assets/images/mycomponent/MyJson.png',name:'Json解析组件' },
+          { id: 7, url: '/src/assets/images/mycomponent/fh.png',name:'计算器组件' }
+        ]
+      }
+      if(tab==='normal'){
+        this.images=[
+          { id: 0, url: '/src/assets/images/mycomponent/TodoRecorder.png',name:'待办组件' },
+          { id: 1, url: '/src/assets/images/mycomponent/MyDate.png',name:'时间组件' },
+          { id: 2, url: '/src/assets/images/mycomponent/WebPreviewer.png',name:'网页多开组件' },
+          { id: 3, url: '/src/assets/images/mycomponent/Www.png',name:'网址收藏组件' },
+          { id: 4, url: '/src/assets/images/mycomponent/Top.png',name:'自定榜单组件' },
+          { id: 5, url: '/src/assets/images/mycomponent/Search.png',name:'搜索组件' }
+        ]
+      }
       // 这里可以添加逻辑来根据激活的标签过滤显示组件列表
     },
     restoreLayout() {
@@ -211,10 +231,7 @@ export default {
 
 
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+    overflow-y: auto;
 }
 
 .global-button {
@@ -259,6 +276,7 @@ button {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  overflow-y: auto; /* 添加这行 */
 }
 
 .modal-content {
@@ -313,9 +331,12 @@ button {
 }
 
 .components-container {
+  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  overflow-y: auto;
+  height: calc(100vh - 100px); /* 假设你希望容器高度减去顶部的100px空间 */
 }
 
 .component-wrapper {
