@@ -154,7 +154,8 @@ export default {
       localStorage.setItem('globalBackgroundImage', this.globalBackgroundImage);
     },
     getComponentByImageName(name){
-      console.log(name.url);
+      if(name===undefined){return };
+      console.log(name);
       switch (name.url) {
         case '/src/assets/images/mycomponent/MyDate.png':
           return MyDate;
