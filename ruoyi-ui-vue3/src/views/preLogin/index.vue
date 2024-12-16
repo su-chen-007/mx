@@ -34,6 +34,7 @@
     <transition-group name="component-list" tag="div" class="components-container">
       <div v-for="(comp, index) in components" :key="comp.id" class="component-wrapper">
         <component :is="comp.component" :image="comp.image" class="component" @delete-component="removeComponent(index)" />
+        <button class="delete-button1" @click="pinComponent(index)">⬆︎</button>
         <button class="delete-button" @click="removeComponent(index)">X</button>
       </div>
     </transition-group>
@@ -94,6 +95,12 @@ export default {
       const isAITab = this.activeTab === 'ai';
       return (allTab && ['时间组件', '搜索组件', '计算器组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', 'Json解析组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件', '自定榜单组件', 'Json解析组件'].includes(this.componentNames[index])) ||
           (isAITab && this.componentNames[index] === '网址收藏组件');
+    },
+    pinComponent(index) {
+      // 将选中的组件移动到数组的第一个位置
+      const [componentToPin] = this.components.splice(index, 1);
+      this.components.unshift(componentToPin);
+      this.saveLayout();
     },
     toggleModal() {
       this.showModal = !this.showModal;
@@ -349,9 +356,22 @@ button {
   margin-bottom: 10px;
 }
 
-.delete-button {
+.delete-button1 {
+  margin-top: 0px;
   position: absolute;
-  top: 0;
+  top: 0px;
+  right: 0;
+  cursor: pointer;
+  padding: 1px 2px;
+  font-size: 9px;
+  line-height: 1;
+  border-radius: 2px;
+}
+
+.delete-button {
+  margin-top: 10px;
+  position: absolute;
+  top: 10px;
   right: 0;
   cursor: pointer;
   padding: 1px 2px;
@@ -394,6 +414,17 @@ button {
   display: none;
   justify-content: center;
   align-items: center;
+}
+
+.pin-button {
+  position: absolute;
+  top: 0;
+  right: 50px; /* 根据需要调整位置 */
+  cursor: pointer;
+  padding: 1px 2px;
+  font-size: 9px;
+  line-height: 1;
+  border-radius: 2px;
 }
 
 .tab-button {
