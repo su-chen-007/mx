@@ -643,7 +643,7 @@ onBeforeUnmount(() => {
   window.removeEventListener("resize", resizeChart);
 });
 
-getTaskCount();
+// getTaskCount();
 // defineExpose无需导入，直接使用
 // defineExpose({ value });
 </script>

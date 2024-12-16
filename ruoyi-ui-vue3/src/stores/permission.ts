@@ -228,7 +228,10 @@ const store = defineStore("permission", {
         this.sidebarRouters = filterSidebarRouter(routers); // 菜单路由
         const asyncRoutes = filterDynamicRoutes(dynamicRoutes); // 功能路由
         this.tagsRouters = concatRouter(this.sidebarRouters, asyncRoutes); // 合并路由
-        this.tagsRouters.forEach((route) => router.addRoute(route));
+        this.tagsRouters.forEach((route) => {
+          if(route.path.startsWith("https://") || route.path.startsWith("http://")) return
+          router.addRoute(route)
+        });
         // this.tagsRouterPaths = getTagsRouterPath(this.tagsRouters);
         //全部路由
         // this.routes = concatRouter(this.tagsRouters, constantRoutes);

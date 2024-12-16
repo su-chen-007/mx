@@ -65,6 +65,7 @@ router.beforeEach((to, from, next) => {
             next({ ...to, replace: true }); // hack方法 确保addRoutes已完成
           })
           .catch((err) => {
+            console.error('捕捉到错误',err);
             uStore.LogOut().then(() => {
               ElMessage.error(err);
               next({ path: "/login" });
