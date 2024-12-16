@@ -35,7 +35,7 @@
       <div v-for="(comp, index) in components" :key="comp.id" class="component-wrapper">
         <component :is="comp.component" :image="comp.image" class="component" @delete-component="removeComponent(index)" />
         <button class="delete-button1" @click="pinComponent(index)">⬆︎</button>
-        <button class="delete-button" @click="removeComponent(index)">X</button>
+        <button class="delete-button" @click="removeComponent(index)">✖</button>
       </div>
     </transition-group>
 
