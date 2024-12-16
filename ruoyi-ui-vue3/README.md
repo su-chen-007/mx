@@ -24,7 +24,13 @@ admin admin123
 
 ## 脚本命令
 
+### 建议先s
+
 ### 依赖安装(建议用 pnpm)
+安装依赖有问题可以指定为国内仓库镜像
+
+查镜像仓库：pnpm config get registry 一般是：https://registry.npmjs.org
+改镜像仓库：pnpm config set registry https://registry.npmmirror.com/
 
 ```sh
 npm install
