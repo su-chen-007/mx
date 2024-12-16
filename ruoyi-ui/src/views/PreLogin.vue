@@ -52,6 +52,8 @@ import Top from './MyComponents/Top.vue';
 import Search from './MyComponents/Search.vue';
 import MyJson from './MyComponents/MyJson.vue';
 import MyCalculator from './MyComponents/MyCalculator.vue';
+import WordPdf from  './MyComponents/WordPdf.vue';
+import Photo from  './MyComponents/MyPhoto.vue';
 
 export default {
   components: {
@@ -62,7 +64,9 @@ export default {
     Top,
     Search,
     MyJson,
-    MyCalculator
+    MyCalculator,
+    WordPdf,
+    Photo
   },
   data() {
     return {
