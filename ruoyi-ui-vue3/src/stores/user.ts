@@ -14,6 +14,10 @@ const store = defineStore("user", {
       avatar: "",
       roles: [] as string[],
       permissions: [] as string[],
+
+
+      layout:[]//组件布局
+
     };
   },
   getters: {

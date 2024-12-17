@@ -14,9 +14,13 @@ import myIcons from "@/components/SvgIcon/myIcon";
 // formCreate
 import formCreate from "@form-create/element-ui";
 import fcDesigner from "@form-create/designer";
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 const app = createApp(App);
-app.use(createPinia());
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
+app.use(pinia);
 app.use(router);
 // element plus Icons
 for (const [name, comp] of Object.entries(ElementPlusIconsVue)) {
