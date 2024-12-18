@@ -166,8 +166,10 @@ export default {
     setGlobalBackgroundImage(event) {
       const file = event.target.files[0];
       if (file) {
-        this.globalBackgroundImage = URL.createObjectURL(file);
-        this.saveLayout();
+          this.globalBackgroundImage = URL.createObjectURL(file);
+          console.log('globalBackgroundImage图片'+this.globalBackgroundImage);
+          localStorage.setItem('globalBackgroundImage', this.globalBackgroundImage); // 存储背景图片URL
+
       }
     },
     saveLayout() {
@@ -238,7 +240,7 @@ export default {
     },
     restoreLayout() {
       const layout = localStorage.getItem('userLayout');
-      console.log(layout);
+      console.log('userLayout:'+layout);
       if (layout) {
         const restoredComponents = JSON.parse(layout);
         this.components = restoredComponents.map(comp => ({
@@ -246,10 +248,13 @@ export default {
           component: this.getComponentByImageName(comp.image)
         }));
       }
-      this.globalBackgroundImage = localStorage.getItem('globalBackgroundImage') || '';
+      const savedBackgroundUrl = localStorage.getItem('globalBackgroundImage');
+      console.log('globalBackgroundImage:'+savedBackgroundUrl);
+      if (savedBackgroundUrl) this.globalBackgroundImage = savedBackgroundUrl; // 恢复背景图片URL
     }
   },
   created() {
+    console.log('开始')
     this.restoreLayout();
   }
 };
