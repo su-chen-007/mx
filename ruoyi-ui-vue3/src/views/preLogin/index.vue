@@ -54,6 +54,15 @@ import Search from '@/components/MyComponents/Search.vue';
 import MyJson from '@/components/MyComponents/MyJson.vue';
 import MyCalculator from '@/components/MyComponents/MyCalculator.vue';
 import love from '@/components/MyComponents/love.vue';
+import TodoRecorderPng from '@/assets/images/mycomponent/TodoRecorder.png';
+import MyDatePng from '@/assets/images/mycomponent/MyDate.png';
+import WebPreviewerPng from '@/assets/images/mycomponent/WebPreviewer.png';
+import WwwPng from '@/assets/images/mycomponent/Www.png';
+import TopPng from '@/assets/images/mycomponent/Top.png';
+import SearchPng from '@/assets/images/mycomponent/Search.png';
+import MyJsonPng from '@/assets/images/mycomponent/MyJson.png';
+import fhPng from '@/assets/images/mycomponent/fh.png';
+import lovePng from '@/assets/images/mycomponent/love.png';
 
 export default {
   components: {
@@ -74,15 +83,15 @@ export default {
       showModal: false,
       components: [],
       images: [
-        { id: 0, url: '/src/assets/images/mycomponent/TodoRecorder.png',name:'待办组件' },
-        { id: 1, url: '/src/assets/images/mycomponent/MyDate.png',name:'时间组件' },
-        { id: 2, url: '/src/assets/images/mycomponent/WebPreviewer.png',name:'网页多开组件' },
-        { id: 3, url: '/src/assets/images/mycomponent/Www.png',name:'网址收藏组件' },
-        { id: 4, url: '/src/assets/images/mycomponent/Top.png',name:'自定榜单组件' },
-        { id: 5, url: '/src/assets/images/mycomponent/Search.png',name:'搜索组件' },
-        { id: 6, url: '/src/assets/images/mycomponent/MyJson.png',name:'Json解析组件' },
-        { id: 7, url: '/src/assets/images/mycomponent/fh.png',name:'计算器组件' },
-        { id: 8, url: '/src/assets/images/mycomponent/love.png',name:'动态爱心表白组件' }
+        { id: 0, url: TodoRecorderPng,name:'待办组件' },
+        { id: 1, url: MyDatePng,name:'时间组件' },
+        { id: 2, url: WebPreviewerPng,name:'网页多开组件' },
+        { id: 3, url: WwwPng,name:'网址收藏组件' },
+        { id: 4, url: TopPng,name:'自定榜单组件' },
+        { id: 5, url: SearchPng,name:'搜索组件' },
+        { id: 6, url: MyJsonPng,name:'Json解析组件' },
+        { id: 7, url: fhPng,name:'计算器组件' },
+        { id: 8, url: lovePng,name:'动态爱心表白组件' }
       ],
       componentNames: [ '待办组件', '时间组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件', '计算器组件', '动态爱心表白组件'],
       nextId: 0,
@@ -162,30 +171,31 @@ export default {
       }
     },
     saveLayout() {
+      console.log(JSON.stringify(this.components));
       localStorage.setItem('userLayout', JSON.stringify(this.components));
       localStorage.setItem('globalBackgroundImage', this.globalBackgroundImage);
     },
-    getComponentByImageName(name){
-      if(name===undefined){return };
-      console.log(name);
-      switch (name.url) {
-        case '/src/assets/images/mycomponent/MyDate.png':
+    getComponentByImageName(image){
+      if(image===undefined){return };
+      console.log(image);
+      switch (image.name) {
+        case '时间组件':
           return MyDate;
-        case '/src/assets/images/mycomponent/TodoRecorder.png':
+        case '待办组件':
           return TodoRecorder;
-        case '/src/assets/images/mycomponent/WebPreviewer.png':
+        case '网页多开组件':
           return WebPreviewer;
-        case '/src/assets/images/mycomponent/Www.png':
+        case '网址收藏组件':
           return Www;
-        case '/src/assets/images/mycomponent/Top.png':
+        case '自定榜单组件':
           return Top;
-        case '/src/assets/images/mycomponent/Search.png':
+        case '搜索组件':
           return Search;
-        case '/src/assets/images/mycomponent/MyJson.png':
+        case 'Json解析组件':
           return MyJson;
-        case '/src/assets/images/mycomponent/fh.png':
+        case '计算器组件':
           return MyCalculator;
-        case '/src/assets/images/mycomponent/love.png':
+        case '动态爱心表白组件':
           return love;
         default:
           return Search;
@@ -196,38 +206,39 @@ export default {
       this.activeTab = tab;
       if(tab==='all'){
         this.images=[
-          { id: 0, url: '/src/assets/images/mycomponent/TodoRecorder.png',name:'待办组件' },
-          { id: 1, url: '/src/assets/images/mycomponent/MyDate.png',name:'时间组件' },
-          { id: 2, url: '/src/assets/images/mycomponent/WebPreviewer.png',name:'网页多开组件' },
-          { id: 3, url: '/src/assets/images/mycomponent/Www.png',name:'网址收藏组件' },
-          { id: 4, url: '/src/assets/images/mycomponent/Top.png',name:'自定榜单组件' },
-          { id: 5, url: '/src/assets/images/mycomponent/Search.png',name:'搜索组件' },
-          { id: 6, url: '/src/assets/images/mycomponent/MyJson.png',name:'Json解析组件' },
-          { id: 7, url: '/src/assets/images/mycomponent/fh.png',name:'计算器组件' },
-          { id: 8, url: '/src/assets/images/mycomponent/love.png',name:'动态爱心表白组件' }
+          { id: 0, url: TodoRecorderPng,name:'待办组件' },
+          { id: 1, url: MyDatePng,name:'时间组件' },
+          { id: 2, url: WebPreviewerPng,name:'网页多开组件' },
+          { id: 3, url: WwwPng,name:'网址收藏组件' },
+          { id: 4, url: TopPng,name:'自定榜单组件' },
+          { id: 5, url: SearchPng,name:'搜索组件' },
+          { id: 6, url: MyJsonPng,name:'Json解析组件' },
+          { id: 7, url: fhPng,name:'计算器组件' },
+          { id: 8, url: lovePng,name:'动态爱心表白组件' }
         ]
       }
       if(tab==='ai'){
         this.images=[
-          { id: 6, url: '/src/assets/images/mycomponent/MyJson.png',name:'Json解析组件' },
-          { id: 7, url: '/src/assets/images/mycomponent/fh.png',name:'计算器组件' }
+          { id: 6, url: MyJsonPng,name:'Json解析组件' },
+          { id: 7, url: fhPng,name:'计算器组件' }
         ]
       }
       if(tab==='normal'){
         this.images=[
-          { id: 0, url: '/src/assets/images/mycomponent/TodoRecorder.png',name:'待办组件' },
-          { id: 1, url: '/src/assets/images/mycomponent/MyDate.png',name:'时间组件' },
-          { id: 2, url: '/src/assets/images/mycomponent/WebPreviewer.png',name:'网页多开组件' },
-          { id: 3, url: '/src/assets/images/mycomponent/Www.png',name:'网址收藏组件' },
-          { id: 4, url: '/src/assets/images/mycomponent/Top.png',name:'自定榜单组件' },
-          { id: 5, url: '/src/assets/images/mycomponent/Search.png',name:'搜索组件' },
-          { id: 6, url: '/src/assets/images/mycomponent/love.png',name:'动态爱心表白组件' }
+          { id: 0, url: TodoRecorderPng,name:'待办组件' },
+          { id: 1, url: MyDatePng,name:'时间组件' },
+          { id: 2, url: WebPreviewerPng,name:'网页多开组件' },
+          { id: 3, url: WwwPng,name:'网址收藏组件' },
+          { id: 4, url: TopPng,name:'自定榜单组件' },
+          { id: 5, url: SearchPng,name:'搜索组件' },
+          { id: 6, url: lovePng,name:'动态爱心表白组件' }
         ]
-      }
       // 这里可以添加逻辑来根据激活的标签过滤显示组件列表
+      }
     },
     restoreLayout() {
       const layout = localStorage.getItem('userLayout');
+      console.log(layout);
       if (layout) {
         const restoredComponents = JSON.parse(layout);
         this.components = restoredComponents.map(comp => ({

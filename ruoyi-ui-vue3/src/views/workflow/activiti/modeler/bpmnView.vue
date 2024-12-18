@@ -53,8 +53,9 @@ import "bpmn-js/dist/assets/bpmn-font/css/bpmn.css";
 import "bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css";
 import "bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css";
 // 右侧属性面包样式
-import "bpmn-js-properties-panel/dist/assets/properties-panel.css";
-import "bpmn-js-properties-panel/dist/assets/element-templates.css";
+import "@bpmn-io/properties-panel/dist/assets/properties-panel.css";
+//import "bpmn-js-properties-panel/dist/assets/properties-panel.css";
+//import "bpmn-js-properties-panel/dist/assets/element-templates.css";
 // 属性面板相关模块
 import { BpmnPropertiesPanelModule, BpmnPropertiesProviderModule, CamundaPlatformPropertiesProviderModule } from "bpmn-js-properties-panel";
 import CamundaBpmnModdle from "camunda-bpmn-moddle/resources/camunda.json";
