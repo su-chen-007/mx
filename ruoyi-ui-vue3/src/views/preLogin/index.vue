@@ -53,6 +53,7 @@ import Top from '@/components/MyComponents/Top.vue';
 import Search from '@/components/MyComponents/Search.vue';
 import MyJson from '@/components/MyComponents/MyJson.vue';
 import MyCalculator from '@/components/MyComponents/MyCalculator.vue';
+import ScroceGame from '@/components/MyComponents/ScroceGame.vue';
 import love from '@/components/MyComponents/love.vue';
 import TodoRecorderPng from '@/assets/images/mycomponent/TodoRecorder.png';
 import MyDatePng from '@/assets/images/mycomponent/MyDate.png';
@@ -63,6 +64,7 @@ import SearchPng from '@/assets/images/mycomponent/Search.png';
 import MyJsonPng from '@/assets/images/mycomponent/MyJson.png';
 import fhPng from '@/assets/images/mycomponent/fh.png';
 import lovePng from '@/assets/images/mycomponent/love.png';
+import ScorcePng from '@/assets/images/mycomponent/Scroce.png';
 
 export default {
   components: {
@@ -74,7 +76,8 @@ export default {
     Search,
     MyJson,
     MyCalculator,
-    love
+    love,
+    ScroceGame
   },
   data() {
     return {
@@ -91,9 +94,10 @@ export default {
         { id: 5, url: SearchPng,name:'搜索组件' },
         { id: 6, url: MyJsonPng,name:'Json解析组件' },
         { id: 7, url: fhPng,name:'计算器组件' },
-        { id: 8, url: lovePng,name:'动态爱心表白组件' }
+        { id: 8, url: lovePng,name:'动态爱心表白组件' },
+        { id: 9, url: ScorcePng,name:'推箱子游戏组件' }
       ],
-      componentNames: [ '待办组件', '时间组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件', '计算器组件', '动态爱心表白组件'],
+      componentNames: [ '待办组件', '时间组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件', '计算器组件', '动态爱心表白组件','推箱子游戏组件'],
       nextId: 0,
       showGlobalBackgroundModal: false,
       globalBackgroundImage: '',
@@ -156,6 +160,8 @@ export default {
           return MyCalculator;
         case '动态爱心表白组件':
           return love;
+        case '推箱子游戏组件':
+          return ScroceGame;
         default:
           return null;
       }
@@ -199,6 +205,8 @@ export default {
           return MyCalculator;
         case '动态爱心表白组件':
           return love;
+        case '推箱子游戏组件':
+          return ScroceGame;
         default:
           return Search;
       }
@@ -216,7 +224,8 @@ export default {
           { id: 5, url: SearchPng,name:'搜索组件' },
           { id: 6, url: MyJsonPng,name:'Json解析组件' },
           { id: 7, url: fhPng,name:'计算器组件' },
-          { id: 8, url: lovePng,name:'动态爱心表白组件' }
+          { id: 8, url: lovePng,name:'动态爱心表白组件' },
+          { id: 9, url: ScorcePng,name:'推箱子游戏组件' }
         ]
       }
       if(tab==='ai'){
