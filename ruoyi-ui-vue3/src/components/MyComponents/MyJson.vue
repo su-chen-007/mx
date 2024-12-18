@@ -3,56 +3,65 @@
     <textarea v-model="inputJson" rows="10" cols="50" placeholder="输入你的json在此..."></textarea>
     <button class="format-btn" @click="formatJson">开始格式化</button>
     <button class="collapse-btn" @click="toggleJsonTree">一键关闭并清理</button>
-    <!--<vue-json-editor-->
-    <!--  class="vue-json-component"-->
-    <!--  v-if="showJsonTree"-->
-    <!--  v-model="formattedJson"-->
-    <!--  :mode="'code'"-->
-    <!--  :show-btns="false"-->
-    <!--  :expandedOnStart="true"-->
-    <!--  @json-change="onJsonChange"-->
-    <!--  :style="{ backgroundColor: '#f8f4f4' }"-->
-    <!--/>-->
+    <JsonEditorVue
+        class="vue-json-component"
+        v-if="showJsonTree"
+        v-model="formattedJson"
+        :mode="'code'"
+        :show-btns="false"
+        :expanded-on-start="true"
+        @json-change="onJsonChange"
+        :style="{ backgroundColor: '#f8f4f4' }"
+    />
   </div>
 </template>
 
 <script>
-// import VueJsonEditor from 'vue-json-editor';
+import { ref } from 'vue';
+import JsonEditorVue from 'json-editor-vue3';
 
 export default {
-  // components: {
-  //   VueJsonEditor
-  // },
-  data() {
-    return {
-      inputJson: '',
-      formattedJson: null,
-      showJsonTree: false // 控制JSON树显示与隐藏的属性
-    };
+  components: {
+    JsonEditorVue
   },
-  methods: {
-    formatJson() {
-      if(this.inputJson ===null){
-        alert('输入为空 请检查');
+  setup() {
+    const inputJson = ref('');
+    const formattedJson = ref(null);
+    const showJsonTree = ref(false);
+
+    const formatJson = () => {
+      if (inputJson.value === '') {
+        alert('输入为空，请检查');
         return;
       }
       try {
-        this.showJsonTree = true // 控制JSON树显示与隐藏的属性
-        this.formattedJson = JSON.parse(this.inputJson);
+        showJsonTree.value = true;
+        formattedJson.value = JSON.parse(inputJson.value);
       } catch (e) {
-        alert('无效的json请检查格式');
-        this.showJsonTree = false // 控制JSON树显示与隐藏的属性
-        this.formattedJson = null;
+        alert('无效的json，请检查格式');
+        showJsonTree.value = false;
+        formattedJson.value = null;
       }
-    },
-    toggleJsonTree() {
-      this.showJsonTree = false; // 切换JSON树的显示状态
-      this.inputJson = null;
-      this.formattedJson = null;
-    },
-    onJsonChange(value) {
+    };
+
+    const toggleJsonTree = () => {
+      showJsonTree.value = false;
+      inputJson.value = '';
+      formattedJson.value = null;
+    };
+
+    const onJsonChange = (value) => {
       console.log('JSON changed:', value);
-    }
+    };
+
+    return {
+      inputJson,
+      formattedJson,
+      showJsonTree,
+      formatJson,
+      toggleJsonTree,
+      onJsonChange
+    };
   }
 };
 </script>
@@ -99,14 +108,4 @@ textarea {
   border-radius: 4px;
   margin-top: auto;
 }
-
-::v-deep .jsoneditor-vue .jsoneditor-outer {
-  width: 100%; /* 设置固定宽度 */
-  height: 1600px; /* 设置固定高度 */
-  overflow-y: auto; /* 垂直方向添加滚动条 */
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
 </style>
