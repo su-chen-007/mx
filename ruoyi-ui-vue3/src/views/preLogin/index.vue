@@ -53,6 +53,7 @@ import Top from '@/components/MyComponents/Top.vue';
 import Search from '@/components/MyComponents/Search.vue';
 import MyJson from '@/components/MyComponents/MyJson.vue';
 import MyCalculator from '@/components/MyComponents/MyCalculator.vue';
+import love from '@/components/MyComponents/love.vue';
 
 export default {
   components: {
@@ -63,7 +64,8 @@ export default {
     Top,
     Search,
     MyJson,
-    MyCalculator
+    MyCalculator,
+    love
   },
   data() {
     return {
@@ -79,9 +81,10 @@ export default {
         { id: 4, url: '/src/assets/images/mycomponent/Top.png',name:'自定榜单组件' },
         { id: 5, url: '/src/assets/images/mycomponent/Search.png',name:'搜索组件' },
         { id: 6, url: '/src/assets/images/mycomponent/MyJson.png',name:'Json解析组件' },
-        { id: 7, url: '/src/assets/images/mycomponent/fh.png',name:'计算器组件' }
+        { id: 7, url: '/src/assets/images/mycomponent/fh.png',name:'计算器组件' },
+        { id: 8, url: '/src/assets/images/mycomponent/love.png',name:'动态爱心表白组件' }
       ],
-      componentNames: [ '待办组件', '时间组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件', '计算器组件'],
+      componentNames: [ '待办组件', '时间组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件', '计算器组件', '动态爱心表白组件'],
       nextId: 0,
       showGlobalBackgroundModal: false,
       globalBackgroundImage: '',
@@ -93,7 +96,7 @@ export default {
       const allTab = this.activeTab === 'all';
       const isNormalTab = this.activeTab === 'normal';
       const isAITab = this.activeTab === 'ai';
-      return (allTab && ['时间组件', '搜索组件', '计算器组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', 'Json解析组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件', '自定榜单组件', 'Json解析组件'].includes(this.componentNames[index])) ||
+      return (allTab && ['时间组件', '搜索组件', '计算器组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', 'Json解析组件', '动态爱心表白组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件', '自定榜单组件', 'Json解析组件','动态爱心表白组件'].includes(this.componentNames[index])) ||
           (isAITab && this.componentNames[index] === '网址收藏组件');
     },
     pinComponent(index) {
@@ -142,6 +145,8 @@ export default {
           return MyJson;
         case '计算器组件':
           return MyCalculator;
+        case '动态爱心表白组件':
+          return love;
         default:
           return null;
       }
@@ -180,6 +185,8 @@ export default {
           return MyJson;
         case '/src/assets/images/mycomponent/fh.png':
           return MyCalculator;
+        case '/src/assets/images/mycomponent/love.png':
+          return love;
         default:
           return Search;
       }
@@ -196,7 +203,8 @@ export default {
           { id: 4, url: '/src/assets/images/mycomponent/Top.png',name:'自定榜单组件' },
           { id: 5, url: '/src/assets/images/mycomponent/Search.png',name:'搜索组件' },
           { id: 6, url: '/src/assets/images/mycomponent/MyJson.png',name:'Json解析组件' },
-          { id: 7, url: '/src/assets/images/mycomponent/fh.png',name:'计算器组件' }
+          { id: 7, url: '/src/assets/images/mycomponent/fh.png',name:'计算器组件' },
+          { id: 8, url: '/src/assets/images/mycomponent/love.png',name:'动态爱心表白组件' }
         ]
       }
       if(tab==='ai'){
@@ -212,7 +220,8 @@ export default {
           { id: 2, url: '/src/assets/images/mycomponent/WebPreviewer.png',name:'网页多开组件' },
           { id: 3, url: '/src/assets/images/mycomponent/Www.png',name:'网址收藏组件' },
           { id: 4, url: '/src/assets/images/mycomponent/Top.png',name:'自定榜单组件' },
-          { id: 5, url: '/src/assets/images/mycomponent/Search.png',name:'搜索组件' }
+          { id: 5, url: '/src/assets/images/mycomponent/Search.png',name:'搜索组件' },
+          { id: 6, url: '/src/assets/images/mycomponent/love.png',name:'动态爱心表白组件' }
         ]
       }
       // 这里可以添加逻辑来根据激活的标签过滤显示组件列表
@@ -344,6 +353,7 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   overflow-y: auto;
+  width: 100%;
   height: calc(100vh - 100px); /* 假设你希望容器高度减去顶部的100px空间 */
 }
 
