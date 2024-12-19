@@ -1,13 +1,14 @@
 import type { AllComponentInfoProps } from "./types";
-import TodoRecorderPng from "@/assets/images/mycomponent/TodoRecorder.png";
-import MyDatePng from "@/assets/images/mycomponent/MyDate.png";
-import WebPreviewerPng from "@/assets/images/mycomponent/WebPreviewer.png";
-import WwwPng from "@/assets/images/mycomponent/Www.png";
-import TopPng from "@/assets/images/mycomponent/Top.png";
-import SearchPng from "@/assets/images/mycomponent/Search.png";
-import MyJsonPng from "@/assets/images/mycomponent/MyJson.png";
-import fhPng from "@/assets/images/mycomponent/fh.png";
-import lovePng from "@/assets/images/mycomponent/love.png";
+import TodoRecorderPng from "./imagePreview/TodoRecorder.png";
+import MyDatePng from "./imagePreview/MyDate.png";
+import WebPreviewerPng from "./imagePreview/WebPreviewer.png";
+import WwwPng from "./imagePreview/Www.png";
+import TopPng from "./imagePreview/Top.png";
+import SearchPng from "./imagePreview/Search.png";
+import MyJsonPng from "./imagePreview/MyJson.png";
+import fhPng from "./imagePreview/fh.png";
+import lovePng from "./imagePreview/love.png";
+import ScorcePng from "./imagePreview/Scroce.png";
 export enum ComponentCategory {
   normal, //普通组件
   ai, //ai组件
@@ -66,6 +67,12 @@ export const AllComponentInfo: AllComponentInfoProps[] = [
     name: "MyComponentLove",
     label: "动态爱心表白组件",
     preview: lovePng,
+    type: ComponentCategory.normal,
+  },
+  {
+    name: "MyComponentScroceGame",
+    label: "推箱子游戏组件",
+    preview: ScorcePng,
     type: ComponentCategory.normal,
   },
 ];
