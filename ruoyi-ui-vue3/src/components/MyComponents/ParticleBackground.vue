@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+
     <!-- 第一个粒子背景效果 -->
     <vue-particles id="tsparticles1" @particles-loaded="particlesLoaded" />
 
@@ -9,10 +9,13 @@
         @particles-loaded="particlesLoaded"
         :options="particleOptions"
     />
-  </div>
+
 </template>
 
 <script setup lang="ts">
+defineOptions({
+  name:"ParticleBackground",
+})
 const particleOptions = {
   background: {
     color: {

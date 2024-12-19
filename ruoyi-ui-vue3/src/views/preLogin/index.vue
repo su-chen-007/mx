@@ -1,10 +1,11 @@
 <template>
-  <div class="container" :style="{ backgroundImage: info.globalBackgroundImage ? `url(${info.globalBackgroundImage})` : '' }">
+  <div class="container" :style="{ backgroundImage: `url(${info.globalBackgroundImage})` }">
     <!-- 居中的横线和按钮 -->
     <div class="horizontal-line">
       <div class="button-container">
         <button class="global-button" @click="toggleModal">MX</button>
         <button class="global-button" @click="triggerBackgroundUpload">BG</button>
+        <button class="global-button"  @click="dlBackgroundUpload">DEBG</button>
       </div>
     </div>
 
@@ -40,6 +41,12 @@
     </transition-group>
     <!-- 文件输入用于上传全局背景 -->
     <input type="file" @change="setGlobalBackgroundImage" style="display: none" ref="globalBackgroundInputRef" />
+
+    <div class="particle-background" v-if="!info.globalBackgroundImage">
+      <!-- 粒子背景 -->
+      <ParticleBackground />
+    </div>
+
   </div>
 </template>
 
@@ -48,6 +55,18 @@ import { AllComponentInfo, ComponentCategory } from "./methods";
 import { reactive, onMounted, ref, computed } from "vue";
 import type { AllComponentInfoProps } from "@/views/preLogin/types";
 import userStore from "@/stores/user";
+import ParticleBackground from '@/components/MyComponents/ParticleBackground.vue';
+
+onMounted(async () => {
+  const storedBackgroundImage = localStorage.getItem("globalBackgroundImage");
+  if (storedBackgroundImage) {
+    info.globalBackgroundImage = storedBackgroundImage;
+    await nextTick();
+    // 这里可以通过修改某个控制背景渲染的类名或者直接重新设置背景样式等方式触发重新渲染
+    document.querySelector('.container').style.backgroundImage = `url(${info.globalBackgroundImage})`;
+  }
+});
+
 const userStoreInfo = userStore();
 const globalBackgroundInputRef = ref();
 const info = reactive<any>({
@@ -96,6 +115,11 @@ const removeComponent = (compName: string) => {
 const triggerBackgroundUpload = () => {
   globalBackgroundInputRef.value.click();
 };
+const dlBackgroundUpload= () => {
+  localStorage.removeItem('globalBackgroundImage');
+  info.globalBackgroundImage=null;
+};
+
 const setGlobalBackgroundImage = (event: any) => {
   const file = event.target.files[0];
   if (file) {
@@ -113,7 +137,18 @@ const setActiveTab = (type: any) => {
 <style scoped>
 .container {
   overflow-y: auto;
+  z-index: 10;
 }
+
+.particle-background {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0; /* 设置为0试试，根据实际情况调整 */
+}
+
+
 
 .global-button {
   padding: 10px 20px; /* 统一按钮内边距 */
@@ -123,6 +158,7 @@ const setActiveTab = (type: any) => {
   border: 1px solid #ccc; /* 按钮边框 */
   border-radius: 5px; /* 圆角边框 */
   background-color: #f0f0f0; /* 按钮背景色 */
+  z-index: 1;
 }
 
 .horizontal-line {
@@ -132,6 +168,8 @@ const setActiveTab = (type: any) => {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative; /* 修改这里 */
+  z-index: 1;
 }
 
 .button-container {
@@ -145,6 +183,7 @@ button {
   font-size: 16px;
   cursor: pointer;
   margin-top: 20px;
+  z-index: 1;
 }
 
 .modal {
@@ -219,11 +258,13 @@ button {
   overflow-y: auto;
   width: 100%;
   height: calc(100vh - 100px); /* 假设你希望容器高度减去顶部的100px空间 */
+  z-index: 1; /* 设置合适的z-index */
 }
 
 .component-wrapper {
   position: relative;
   margin: 10px;
+  z-index: 1; /* 设置合适的z-index */
 }
 
 .component {
