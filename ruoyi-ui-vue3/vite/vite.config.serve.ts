@@ -8,7 +8,7 @@ export default defineConfig({
     host: "localhost",
     // 是否开启自动打开浏览器
     open: true,
-    port:11111,
+    port: 1024,
     proxy: {
       "^/dev-api": {
         target: `http://1.15.104.93:8080`,

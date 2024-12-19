@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import backgroundImage from '@/assets/images/mycomponent/fh2.jpg';
+import backgroundImage from '@/assets/images/mycomponent/fh2.gif';
 export default {
   data() {
     return {
