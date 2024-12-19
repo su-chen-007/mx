@@ -1,12 +1,11 @@
-import type{ App } from "vue";
+import type { App } from "vue";
 const install = (Vue: App) => {
-  const modules = import.meta.glob(['../components/*/*.vue','!../components/Crontab/*.vue'],{
-    eager:true,
-  }) as any
-  console.log('modules',modules);
+  const modules = import.meta.glob(["../components/*/*.vue", "!../components/Crontab/*.vue"], {
+    eager: true,
+  }) as any;
+  console.log("modules", modules);
   // 遍历模块并注册为全局组件
   for (const path in modules) {
-    console.log('path',path);
     const component = modules[path].default; // 获取模块的默认导出
     if (component && component.name) {
       Vue.component(component.name, component); // 按名称注册组件

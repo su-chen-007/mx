@@ -5,7 +5,7 @@
       <div class="button-container">
         <button class="global-button" @click="toggleModal">MX</button>
         <button class="global-button" @click="triggerBackgroundUpload">BG</button>
-        <button class="global-button"  @click="dlBackgroundUpload">DEBG</button>
+        <button class="global-button" @click="dlBackgroundUpload">DEBG</button>
       </div>
     </div>
 
@@ -41,32 +41,20 @@
     </transition-group>
     <!-- 文件输入用于上传全局背景 -->
     <input type="file" @change="setGlobalBackgroundImage" style="display: none" ref="globalBackgroundInputRef" />
-
     <div class="particle-background" v-if="!info.globalBackgroundImage">
       <!-- 粒子背景 -->
       <ParticleBackground />
     </div>
-
   </div>
 </template>
 
 <script setup lang="ts">
 import { AllComponentInfo, ComponentCategory } from "./methods";
-import { reactive, onMounted, ref, computed } from "vue";
+import { reactive, onMounted, ref, computed, nextTick } from "vue";
 import type { AllComponentInfoProps } from "@/views/preLogin/types";
 import userStore from "@/stores/user";
-import ParticleBackground from '@/components/MyComponents/ParticleBackground.vue';
-
-onMounted(async () => {
-  const storedBackgroundImage = localStorage.getItem("globalBackgroundImage");
-  if (storedBackgroundImage) {
-    info.globalBackgroundImage = storedBackgroundImage;
-    await nextTick();
-    // 这里可以通过修改某个控制背景渲染的类名或者直接重新设置背景样式等方式触发重新渲染
-    document.querySelector('.container').style.backgroundImage = `url(${info.globalBackgroundImage})`;
-  }
-});
-
+import ParticleBackground from "@/components/MyComponents/ParticleBackground.vue";
+import { fileToBase64 } from "@/utils/file";
 const userStoreInfo = userStore();
 const globalBackgroundInputRef = ref();
 const info = reactive<any>({
@@ -75,7 +63,7 @@ const info = reactive<any>({
   showToast: false,
   showModal: false,
   showGlobalBackgroundModal: false,
-  globalBackgroundImage: "",
+  globalBackgroundImage: localStorage.getItem("globalBackgroundImage"),
   activeTab: "", //当前组件类型
 });
 const showComponentList = computed(() => {
@@ -115,16 +103,22 @@ const removeComponent = (compName: string) => {
 const triggerBackgroundUpload = () => {
   globalBackgroundInputRef.value.click();
 };
-const dlBackgroundUpload= () => {
-  localStorage.removeItem('globalBackgroundImage');
-  info.globalBackgroundImage=null;
+const dlBackgroundUpload = () => {
+  localStorage.removeItem("globalBackgroundImage");
+  info.globalBackgroundImage = null;
 };
 
-const setGlobalBackgroundImage = (event: any) => {
+const setGlobalBackgroundImage = async (event: any) => {
   const file = event.target.files[0];
   if (file) {
-    info.globalBackgroundImage = URL.createObjectURL(file);
-    saveLayout();
+    const result = await fileToBase64(file);
+    console.log("result", result);
+    if (result.status) {
+      info.globalBackgroundImage = result.data.replace(/\s/g, encodeURIComponent(" "));
+      saveLayout();
+    } else {
+      console.error("error---", result.error);
+    }
   }
 };
 //切换组件类型
@@ -147,8 +141,6 @@ const setActiveTab = (type: any) => {
   bottom: 0;
   z-index: 0; /* 设置为0试试，根据实际情况调整 */
 }
-
-
 
 .global-button {
   padding: 10px 20px; /* 统一按钮内边距 */
