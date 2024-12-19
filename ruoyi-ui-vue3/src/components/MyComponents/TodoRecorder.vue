@@ -58,6 +58,7 @@
 import { Chrome } from 'vue-color';
 
 export default {
+  name:"MyComponentTodoRecorder",
   components: {
     'chrome-picker': Chrome
   },

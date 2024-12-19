@@ -21,6 +21,7 @@
 <script>
 import backgroundImage from '@/assets/images/mycomponent/bj.png';
 export default {
+  name:"MyComponentSearch",
   data() {
     return {
       searchQuery: '',

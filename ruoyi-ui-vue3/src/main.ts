@@ -2,37 +2,22 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
-import ElementPlus from "element-plus";
-import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-import "element-plus/dist/index.css";
+import ElementInstall from "@/plugins/element";
+import FormCreateInstall from "@/plugins/formCreate"
+import ComponentGlobalInstall from "@/plugins/component"
 import "@/assets/styles/index.less";
-import myDirective from "@/directive/index"; // directive
-import myComponent from "@/components/index"; // component
+import DirectivesInstall from "@/plugins/directives"
 // svg图标
 import "virtual:svg-icons-register";
-import myIcons from "@/components/SvgIcon/myIcon";
-// formCreate
-import formCreate from "@form-create/element-ui";
-import fcDesigner from "@form-create/designer";
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-
 const app = createApp(App);
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
+  .use(router)
+  .use(ElementInstall) //Element组件
+  .use(ComponentGlobalInstall) //
+  .use(DirectivesInstall) // 挂载全局指令
+  .use(FormCreateInstall) // FormCreate
+  .mount("#app")
 
-app.use(pinia);
-app.use(router);
-// element plus Icons
-for (const [name, comp] of Object.entries(ElementPlusIconsVue)) {
-  app.component(name, comp);
-}
-// 自定义icon 转化为 element plus Icons
-myIcons.forEach((item) => {
-  app.component(item.name, item.component);
-});
-app.use(ElementPlus);
-app.use(myDirective); // 挂载全局指令
-app.use(myComponent); // 挂载全局组件
-app.use(formCreate);
-app.use(fcDesigner);
-app.mount("#app");

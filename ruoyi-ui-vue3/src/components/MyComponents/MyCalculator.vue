@@ -40,6 +40,7 @@
 <script>
 import backgroundImage from '@/assets/images/mycomponent/fh2.gif';
 export default {
+  name:"MyComponentCalculator",
   data() {
     return {
       customTitle: '',

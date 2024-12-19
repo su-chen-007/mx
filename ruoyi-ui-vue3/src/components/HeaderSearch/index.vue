@@ -19,13 +19,15 @@
   </div>
 </template>
 
-<script lang="ts" setup name="HeaderSearchCmpt">
+<script lang="ts" setup>
 import Fuse, { type FuseResult } from "fuse.js";
 import { isHttp } from "@/utils/validate";
 import permissionStore from "@/stores/permission";
 import { nextTick, onMounted, ref, watch, watchEffect } from "vue";
 import { useRouter, type RouteRecordRaw } from "vue-router";
-
+defineOptions({
+  name:"HeaderSearchCmpt",
+})
 type SearchData = {
   path: string;
   title: string[];

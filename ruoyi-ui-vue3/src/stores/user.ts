@@ -15,7 +15,7 @@ const store = defineStore("user", {
       roles: [] as string[],
       permissions: [] as string[],
 
-      layout:[]//组件布局
+      layout: [] as string[], //组件布局
     };
   },
   getters: {
@@ -77,7 +77,7 @@ const store = defineStore("user", {
   },
   persist: {
     key: "mx-user-info",
-    pick: ['layout'],
+    pick: ["layout"],
   },
 });
 

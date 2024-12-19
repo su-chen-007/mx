@@ -4,9 +4,11 @@
   </div>
 </template>
 
-<script lang="ts" setup name="CompIFrame">
+<script lang="ts" setup >
 import { computed, onMounted, ref } from "vue";
-
+defineOptions({
+  name:"CompIFrame",
+})
 const props = defineProps<{
   src: string;
 }>();

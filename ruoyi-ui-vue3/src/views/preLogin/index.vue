@@ -1,28 +1,28 @@
 <template>
-  <div class="container" :style="{ backgroundImage: globalBackgroundImage ? `url(${globalBackgroundImage})` : '' }">
+  <div class="container" :style="{ backgroundImage: info.globalBackgroundImage ? `url(${info.globalBackgroundImage})` : '' }">
     <!-- 居中的横线和按钮 -->
     <div class="horizontal-line">
       <div class="button-container">
-        <button class="global-button"  @click="toggleModal">MX</button>
-        <button class="global-button"  @click="triggerBackgroundUpload">BG</button>
+        <button class="global-button" @click="toggleModal">MX</button>
+        <button class="global-button" @click="triggerBackgroundUpload">BG</button>
       </div>
     </div>
 
     <!-- 图片组件列表模态框 -->
     <transition name="modal">
-      <div class="modal" v-if="showModal">
+      <div class="modal" v-if="info.showModal">
         <div class="modal-content">
-          <div v-if="showToast" class="toast">{{ toastMessage }}</div>
+          <div v-if="info.showToast" class="toast">{{ info.toastMessage }}</div>
           <span class="close" @click="toggleModal">&times;</span>
           <div class="store-title">MX组件商店</div>
-          <button class="tab-button" @click="setActiveTab('all')" :class="{ active: activeTab === 'all' }">全部组件</button>
-          <button class="tab-button" @click="setActiveTab('normal')" :class="{ active: activeTab === 'normal' }">普通组件</button>
-          <button class="tab-button" @click="setActiveTab('ai')" :class="{ active: activeTab === 'ai' }">AI组件</button>
+          <button class="tab-button" @click="setActiveTab('')" :class="{ active: info.activeTab === '' }">全部组件</button>
+          <button class="tab-button" @click="setActiveTab(ComponentCategory.normal)" :class="{ active: info.activeTab === ComponentCategory.normal }">普通组件</button>
+          <button class="tab-button" @click="setActiveTab(ComponentCategory.ai)" :class="{ active: info.activeTab === ComponentCategory.ai }">AI组件</button>
           <ul class="image-list">
-            <li v-for="image in images"  @click="addComponent(image.id)" >
+            <li v-for="item in showComponentList" :key="item.name" @click="handleAddComponent(item)">
               <div class="image-and-name">
-                <span class="component-name">{{ image.name }}</span>
-                <img :src="image.url" alt="Image" />
+                <span class="component-name">{{ item.label }}</span>
+                <img :src="item.preview" alt="Image" />
               </div>
             </li>
           </ul>
@@ -32,234 +32,87 @@
 
     <!-- 动态添加的组件 -->
     <transition-group name="component-list" tag="div" class="components-container">
-      <div v-for="(comp, index) in components" :key="comp.id" class="component-wrapper">
-        <component :is="comp.component" :image="comp.image" class="component" @delete-component="removeComponent(index)" />
-        <button class="delete-button1" @click="pinComponent(index)">⬆︎</button>
-        <button class="delete-button" @click="removeComponent(index)">✖</button>
+      <div v-for="(compName, index) in userStoreInfo.layout" :key="index" class="component-wrapper">
+        <component :is="compName as string" @delete-component="removeComponent(compName)" />
+        <button class="delete-button1" @click="pinComponent(compName)">⬆︎</button>
+        <button class="delete-button" @click="removeComponent(compName)">✖</button>
       </div>
     </transition-group>
-
     <!-- 文件输入用于上传全局背景 -->
-    <input type="file" @change="setGlobalBackgroundImage" style="display: none;" ref="globalBackgroundInput" />
+    <input type="file" @change="setGlobalBackgroundImage" style="display: none" ref="globalBackgroundInputRef" />
   </div>
 </template>
 
-<script>
-import TodoRecorder from '@/components/MyComponents/TodoRecorder.vue';
-import MyDate from '@/components/MyComponents/MyDate.vue';
-import WebPreviewer from '@/components/MyComponents/WebPreviewer.vue';
-import Www from '@/components/MyComponents/Www.vue';
-import Top from '@/components/MyComponents/Top.vue';
-import Search from '@/components/MyComponents/Search.vue';
-import MyJson from '@/components/MyComponents/MyJson.vue';
-import MyCalculator from '@/components/MyComponents/MyCalculator.vue';
-import love from '@/components/MyComponents/love.vue';
-import TodoRecorderPng from '@/assets/images/mycomponent/TodoRecorder.png';
-import MyDatePng from '@/assets/images/mycomponent/MyDate.png';
-import WebPreviewerPng from '@/assets/images/mycomponent/WebPreviewer.png';
-import WwwPng from '@/assets/images/mycomponent/Www.png';
-import TopPng from '@/assets/images/mycomponent/Top.png';
-import SearchPng from '@/assets/images/mycomponent/Search.png';
-import MyJsonPng from '@/assets/images/mycomponent/MyJson.png';
-import fhPng from '@/assets/images/mycomponent/fh.png';
-import lovePng from '@/assets/images/mycomponent/love.png';
-
-export default {
-  components: {
-    TodoRecorder,
-    MyDate,
-    WebPreviewer,
-    Www,
-    Top,
-    Search,
-    MyJson,
-    MyCalculator,
-    love
-  },
-  data() {
-    return {
-      toastMessage: '',
-      showToast: false,
-      showModal: false,
-      components: [],
-      images: [
-        { id: 0, url: TodoRecorderPng,name:'待办组件' },
-        { id: 1, url: MyDatePng,name:'时间组件' },
-        { id: 2, url: WebPreviewerPng,name:'网页多开组件' },
-        { id: 3, url: WwwPng,name:'网址收藏组件' },
-        { id: 4, url: TopPng,name:'自定榜单组件' },
-        { id: 5, url: SearchPng,name:'搜索组件' },
-        { id: 6, url: MyJsonPng,name:'Json解析组件' },
-        { id: 7, url: fhPng,name:'计算器组件' },
-        { id: 8, url: lovePng,name:'动态爱心表白组件' }
-      ],
-      componentNames: [ '待办组件', '时间组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件', '计算器组件', '动态爱心表白组件'],
-      nextId: 0,
-      showGlobalBackgroundModal: false,
-      globalBackgroundImage: '',
-      activeTab: 'all'
-    };
-  },
-  methods: {
-    shouldShowComponent(index) {
-      const allTab = this.activeTab === 'all';
-      const isNormalTab = this.activeTab === 'normal';
-      const isAITab = this.activeTab === 'ai';
-      return (allTab && ['时间组件', '搜索组件', '计算器组件', '待办组件', '网页多开组件', '网址收藏组件', '自定榜单组件', 'Json解析组件', '动态爱心表白组件'].includes(this.componentNames[index])) || (isNormalTab && ['时间组件', '待办组件', '网页多开组件', '自定榜单组件', 'Json解析组件','动态爱心表白组件'].includes(this.componentNames[index])) ||
-          (isAITab && this.componentNames[index] === '网址收藏组件');
-    },
-    pinComponent(index) {
-      // 将选中的组件移动到数组的第一个位置
-      const [componentToPin] = this.components.splice(index, 1);
-      this.components.unshift(componentToPin);
-      this.saveLayout();
-    },
-    toggleModal() {
-      this.showModal = !this.showModal;
-    },
-    addComponent(index) {
-      const componentType = this.componentNames[index];
-      const ComponentClass = this.getComponentByName(componentType);
-      this.components.push({
-        id: this.nextId++,
-        component: ComponentClass,
-        image: this.images[index]
-      });
-      this.saveLayout();
-      this.toastMessage = "mx组件添加成功";
-      this.showToast = true;
-      setTimeout(() => {
-        this.showToast = false;
-      }, 1000); // 1秒后隐藏提示
-    },
-    removeComponent(index) {
-      this.components.splice(index, 1);
-      this.saveLayout();
-    },
-    getComponentByName(name) {
-      switch (name) {
-        case '时间组件':
-          return MyDate;
-        case '待办组件':
-          return TodoRecorder;
-        case '网页多开组件':
-          return WebPreviewer;
-        case '网址收藏组件':
-          return Www;
-        case '自定榜单组件':
-          return Top;
-        case '搜索组件':
-          return Search;
-        case 'Json解析组件':
-          return MyJson;
-        case '计算器组件':
-          return MyCalculator;
-        case '动态爱心表白组件':
-          return love;
-        default:
-          return null;
-      }
-    },
-    triggerBackgroundUpload() {
-      this.$refs.globalBackgroundInput.click();
-    },
-    setGlobalBackgroundImage(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.globalBackgroundImage = URL.createObjectURL(file);
-        this.saveLayout();
-      }
-    },
-    saveLayout() {
-      console.log(JSON.stringify(this.components));
-      localStorage.setItem('userLayout', JSON.stringify(this.components));
-      localStorage.setItem('globalBackgroundImage', this.globalBackgroundImage);
-    },
-    getComponentByImageName(image){
-      if(image===undefined){return };
-      console.log(image);
-      switch (image.name) {
-        case '时间组件':
-          return MyDate;
-        case '待办组件':
-          return TodoRecorder;
-        case '网页多开组件':
-          return WebPreviewer;
-        case '网址收藏组件':
-          return Www;
-        case '自定榜单组件':
-          return Top;
-        case '搜索组件':
-          return Search;
-        case 'Json解析组件':
-          return MyJson;
-        case '计算器组件':
-          return MyCalculator;
-        case '动态爱心表白组件':
-          return love;
-        default:
-          return Search;
-      }
-    },
-    setActiveTab(tab) {
-      console.log(tab);
-      this.activeTab = tab;
-      if(tab==='all'){
-        this.images=[
-          { id: 0, url: TodoRecorderPng,name:'待办组件' },
-          { id: 1, url: MyDatePng,name:'时间组件' },
-          { id: 2, url: WebPreviewerPng,name:'网页多开组件' },
-          { id: 3, url: WwwPng,name:'网址收藏组件' },
-          { id: 4, url: TopPng,name:'自定榜单组件' },
-          { id: 5, url: SearchPng,name:'搜索组件' },
-          { id: 6, url: MyJsonPng,name:'Json解析组件' },
-          { id: 7, url: fhPng,name:'计算器组件' },
-          { id: 8, url: lovePng,name:'动态爱心表白组件' }
-        ]
-      }
-      if(tab==='ai'){
-        this.images=[
-          { id: 6, url: MyJsonPng,name:'Json解析组件' },
-          { id: 7, url: fhPng,name:'计算器组件' }
-        ]
-      }
-      if(tab==='normal'){
-        this.images=[
-          { id: 0, url: TodoRecorderPng,name:'待办组件' },
-          { id: 1, url: MyDatePng,name:'时间组件' },
-          { id: 2, url: WebPreviewerPng,name:'网页多开组件' },
-          { id: 3, url: WwwPng,name:'网址收藏组件' },
-          { id: 4, url: TopPng,name:'自定榜单组件' },
-          { id: 5, url: SearchPng,name:'搜索组件' },
-          { id: 6, url: lovePng,name:'动态爱心表白组件' }
-        ]
-      // 这里可以添加逻辑来根据激活的标签过滤显示组件列表
-      }
-    },
-    restoreLayout() {
-      const layout = localStorage.getItem('userLayout');
-      console.log(layout);
-      if (layout) {
-        const restoredComponents = JSON.parse(layout);
-        this.components = restoredComponents.map(comp => ({
-          ...comp,
-          component: this.getComponentByImageName(comp.image)
-        }));
-      }
-      this.globalBackgroundImage = localStorage.getItem('globalBackgroundImage') || '';
-    }
-  },
-  created() {
-    this.restoreLayout();
+<script setup lang="ts">
+import { AllComponentInfo, ComponentCategory } from "./methods";
+import { reactive, onMounted, ref, computed } from "vue";
+import type { AllComponentInfoProps } from "@/views/preLogin/types";
+import userStore from "@/stores/user";
+const userStoreInfo = userStore();
+const globalBackgroundInputRef = ref();
+const info = reactive<any>({
+  toastMessage: "", //提示信息
+  filterType: "", //筛选类型
+  showToast: false,
+  showModal: false,
+  showGlobalBackgroundModal: false,
+  globalBackgroundImage: "",
+  activeTab: "", //当前组件类型
+});
+const showComponentList = computed(() => {
+  if (info.filterType === "") {
+    return AllComponentInfo;
+  } else {
+    return AllComponentInfo.filter((item: any) => item.type === info.filterType);
   }
+});
+// 点击添加组件
+const handleAddComponent = (item: AllComponentInfoProps) => {
+  //@ts-ignore
+  userStoreInfo.layout.push(item.name);
+  info.toastMessage = "mx组件添加成功";
+  info.showToast = true;
+  setTimeout(() => {
+    info.showToast = false;
+  }, 1000); // 1秒后隐藏提示
+};
+// 将选中的组件移动到数组的第一个位置
+const pinComponent = (compName: string) => {
+  const index = userStoreInfo.layout.findIndex((item) => item === compName);
+  if (index !== -1) {
+    userStoreInfo.layout.unshift(userStoreInfo.layout.splice(index, 1)[0]);
+  }
+};
+const saveLayout = () => {
+  localStorage.setItem("globalBackgroundImage", info.globalBackgroundImage);
+};
+const toggleModal = () => {
+  info.showModal = !info.showModal;
+};
+//移除组件
+const removeComponent = (compName: string) => {
+  userStoreInfo.layout = userStoreInfo.layout.filter((item: any) => item !== compName);
+};
+const triggerBackgroundUpload = () => {
+  globalBackgroundInputRef.value.click();
+};
+const setGlobalBackgroundImage = (event: any) => {
+  const file = event.target.files[0];
+  if (file) {
+    info.globalBackgroundImage = URL.createObjectURL(file);
+    saveLayout();
+  }
+};
+//切换组件类型
+const setActiveTab = (type: any) => {
+  info.filterType = type;
+  info.activeTab = type;
 };
 </script>
 
 <style scoped>
-
-
 .container {
-    overflow-y: auto;
+  overflow-y: auto;
 }
 
 .global-button {
@@ -474,6 +327,4 @@ button {
   border-radius: 10%;
   z-index: 9999; /* 确保提示在最上面 */
 }
-
-
 </style>

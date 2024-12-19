@@ -21,10 +21,12 @@
   </div>
 </template>
 
-<script setup lang="ts" name="DictTagCmpt">
+<script setup lang="ts" >
 import { computed } from "vue";
 import type { DictObj } from "@/api/system/dict/data";
-
+defineOptions({
+  name:"DictTag",
+})
 const props = withDefaults(
   defineProps<{
     options?: DictObj[]; // 数据

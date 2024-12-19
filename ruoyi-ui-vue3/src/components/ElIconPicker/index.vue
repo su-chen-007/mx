@@ -31,12 +31,14 @@
   </div>
 </template>
 
-<script lang="ts" setup name="ComElIconPicker">
+<script lang="ts" setup>
 import { ref, watch } from "vue";
 import { Search } from "@element-plus/icons-vue";
 import * as ELIconComps from "@element-plus/icons-vue";
 import { myIconNames } from "../SvgIcon/myIcon";
-
+defineOptions({
+  name:"ComElIconPicker",
+})
 // 获取所有elment Icon name
 const elIcons: string[] = [];
 for (const [key] of Object.entries(ELIconComps)) {

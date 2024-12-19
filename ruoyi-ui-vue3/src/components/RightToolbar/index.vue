@@ -28,9 +28,12 @@
     </el-dialog>
   </div>
 </template>
-<script lang="ts" setup name="RightToolbarCmpt">
+<script lang="ts" setup >
 import type { TransferKey } from "element-plus";
 import { computed, ref } from "vue";
+defineOptions({
+  name:"RightToolbar",
+})
 type transferObj = {
   key: number;
   label: string;

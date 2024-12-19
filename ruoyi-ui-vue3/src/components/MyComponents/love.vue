@@ -16,9 +16,11 @@
 
 </template>
 
-<script setup>
+<script setup >
 import {onMounted, ref, watch} from 'vue'
-
+defineOptions({
+  name:"MyComponentLove",
+})
 const text=ref('L ❤ Y')
 const textColor=ref('#ea80b0')
 const defaultTextColors=ref( ['#ea80b0','#2D8CF0', '#FF9900', '#19C919', '#9B1DEA', '#EA4CA3'])

@@ -20,6 +20,7 @@
 
 <script>
 export default {
+  name:"MyComponentTop",
   data() {
     return {
       showDropdown: false,

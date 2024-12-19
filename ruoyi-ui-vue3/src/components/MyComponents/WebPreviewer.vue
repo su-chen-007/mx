@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: "WebPreviewer",
+  name: "MyComponentWebPreviewer",
   data() {
     return {
       url: '',

@@ -8,7 +8,10 @@
   </div>
 </template>
 
-<script lang="ts" setup name="HamburgerCmpt">
+<script lang="ts" setup >
+defineOptions({
+  name:"HamburgerCmpt",
+})
 defineProps({
   isActive: {
     type: Boolean,

@@ -24,7 +24,7 @@ import moment from 'moment';
 import lunar from 'lunar-javascript';
 
 export default {
-  name: 'my-date',
+  name:"MyComponentDate",
   data() {
     return {
       year: moment().year(),

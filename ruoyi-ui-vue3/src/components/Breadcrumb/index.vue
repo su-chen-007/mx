@@ -9,11 +9,13 @@
   </el-breadcrumb>
 </template>
 
-<script lang="ts" setup name="Breadcrumb">
+<script lang="ts" setup >
 import { ref, watchEffect } from "vue";
 import type { RouteLocationRaw, RouteMeta } from "vue-router";
 import { useRoute, useRouter } from "vue-router";
-
+defineOptions({
+  name:"Breadcrumb",
+})
 type CrumbObj = {
   path: string;
   meta: RouteMeta;

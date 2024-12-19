@@ -4,9 +4,11 @@
   </svg>
 </template>
 
-<script lang="ts" name="CompSvgIcon" setup>
+<script lang="ts"  setup>
 import { computed } from "vue";
-
+defineOptions({
+  name:"CompSvgIcon",
+})
 const props = withDefaults(
   defineProps<{
     iconClass: string;

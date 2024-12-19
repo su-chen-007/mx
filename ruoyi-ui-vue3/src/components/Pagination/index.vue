@@ -16,11 +16,13 @@
   </div>
 </template>
 
-<script setup lang="ts" name="PaginationCmpt">
+<script setup lang="ts" >
 import { scrollTo } from "@/utils/scroll-to";
 import { computed } from "vue";
 import { zhCn } from "element-plus/es/locales";
-
+defineOptions({
+  name:"Pagination",
+})
 const props = withDefaults(
   defineProps<{
     total: number;

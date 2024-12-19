@@ -21,6 +21,7 @@ import { ref } from 'vue';
 import JsonEditorVue from 'json-editor-vue3';
 
 export default {
+  name:"MyComponentJSONParse",
   components: {
     JsonEditorVue
   },

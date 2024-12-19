@@ -38,7 +38,7 @@ const router = createRouter({
 
 // 是否显示重新登录
 export const isRelogin = { show: false };
-const whiteList = ["/login", "/register","/preLogin"];
+const whiteList = ["/login", "/register","/preLogin","/prelogin"];
 
 NProgress.configure({ showSpinner: false });
 
@@ -81,6 +81,7 @@ router.beforeEach((to, from, next) => {
       // 在免登录白名单，直接进入
       next();
     } else {
+      console.log('141414',to.path);
       next(`/login?redirect=${to.fullPath}`); // 否则全部重定向到登录页
       NProgress.done();
     }
