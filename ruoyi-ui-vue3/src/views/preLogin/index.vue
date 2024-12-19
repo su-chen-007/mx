@@ -1,10 +1,11 @@
 <template>
-  <div class="container" :style="{ backgroundImage: globalBackgroundImage ? `url(${globalBackgroundImage})` : '' }">
+  <div class="container" :style="{ backgroundImage:  `url(${globalBackgroundImage})` }">
     <!-- 居中的横线和按钮 -->
     <div class="horizontal-line">
       <div class="button-container">
         <button class="global-button"  @click="toggleModal">MX</button>
         <button class="global-button"  @click="triggerBackgroundUpload">BG</button>
+        <button class="global-button"  @click="dlBackgroundUpload">DEBG</button>
       </div>
     </div>
 
@@ -41,10 +42,15 @@
 
     <!-- 文件输入用于上传全局背景 -->
     <input type="file" @change="setGlobalBackgroundImage" style="display: none;" ref="globalBackgroundInput" />
+    <div class="particle-background" v-if="!globalBackgroundImage">
+      <!-- 粒子背景 -->
+      <ParticleBackground />
+    </div>
   </div>
 </template>
 
 <script>
+import ParticleBackground from '@/components/MyComponents/ParticleBackground.vue';
 import TodoRecorder from '@/components/MyComponents/TodoRecorder.vue';
 import MyDate from '@/components/MyComponents/MyDate.vue';
 import WebPreviewer from '@/components/MyComponents/WebPreviewer.vue';
@@ -65,7 +71,6 @@ import MyJsonPng from '@/assets/images/mycomponent/MyJson.png';
 import fhPng from '@/assets/images/mycomponent/fh.png';
 import lovePng from '@/assets/images/mycomponent/love.png';
 import ScorcePng from '@/assets/images/mycomponent/Scroce.png';
-import liuxingyu from '@/assets/images/mycomponent/3.gif';
 
 export default {
   components: {
@@ -78,7 +83,8 @@ export default {
     MyJson,
     MyCalculator,
     love,
-    ScroceGame
+    ScroceGame,
+    ParticleBackground
   },
   data() {
     return {
@@ -101,7 +107,7 @@ export default {
       componentNames: [ '待办组件', '时间组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件', '计算器组件', '动态爱心表白组件','推箱子游戏组件'],
       nextId: 0,
       showGlobalBackgroundModal: false,
-      globalBackgroundImage: liuxingyu,
+      globalBackgroundImage: '',
       activeTab: 'all'
     };
   },
@@ -169,6 +175,10 @@ export default {
     },
     triggerBackgroundUpload() {
       this.$refs.globalBackgroundInput.click();
+    },
+    dlBackgroundUpload() {
+      localStorage.removeItem('globalBackgroundImage');
+      this.globalBackgroundImage=null;
     },
     setGlobalBackgroundImage(event) {
       const file = event.target.files[0];
@@ -260,7 +270,13 @@ export default {
       }
       const savedBackgroundUrl = localStorage.getItem('globalBackgroundImage');
       console.log('globalBackgroundImage:'+savedBackgroundUrl);
-      if (savedBackgroundUrl) this.globalBackgroundImage = savedBackgroundUrl; // 恢复背景图片URL
+      if(savedBackgroundUrl === null){
+        console.log('1globalBackgroundImage:'+savedBackgroundUrl);
+        this.globalBackgroundImage=null;
+      }else{
+        console.log('2globalBackgroundImage:'+savedBackgroundUrl);
+        this.globalBackgroundImage=savedBackgroundUrl;
+      }
     }
   },
   created() {
@@ -274,7 +290,9 @@ export default {
 
 
 .container {
+    position: relative;
     overflow-y: auto;
+    z-index: 1;
 }
 
 .global-button {
@@ -285,6 +303,7 @@ export default {
   border: 1px solid #ccc; /* 按钮边框 */
   border-radius: 5px; /* 圆角边框 */
   background-color: #f0f0f0; /* 按钮背景色 */
+  z-index: 1;
 }
 
 .horizontal-line {
@@ -294,12 +313,15 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative; /* 修改这里 */
+  z-index: 1;
 }
 
 .button-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 }
 
 button {
@@ -381,11 +403,13 @@ button {
   overflow-y: auto;
   width: 100%;
   height: calc(100vh - 100px); /* 假设你希望容器高度减去顶部的100px空间 */
+  z-index: 1; /* 设置合适的z-index */
 }
 
 .component-wrapper {
   position: relative;
   margin: 10px;
+  z-index: 1; /* 设置合适的z-index */
 }
 
 .component {
@@ -488,6 +512,15 @@ button {
   color: #e6efef;
   border-radius: 10%;
   z-index: 9999; /* 确保提示在最上面 */
+}
+
+.particle-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0; /* 设置为0试试，根据实际情况调整 */
 }
 
 
