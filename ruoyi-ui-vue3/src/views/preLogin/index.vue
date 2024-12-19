@@ -55,17 +55,30 @@ import type { AllComponentInfoProps } from "@/views/preLogin/types";
 import userStore from "@/stores/user";
 import ParticleBackground from "@/components/MyComponents/ParticleBackground.vue";
 import { fileToBase64 } from "@/utils/file";
+import db from "@/db/index";
 const userStoreInfo = userStore();
 const globalBackgroundInputRef = ref();
+onMounted(async () => {
+  const picList = await db.globalBackgroundImage.toArray();
+  info.globalBackgroundImage = picList[0]?.picture;
+});
 const info = reactive<any>({
   toastMessage: "", //提示信息
   filterType: "", //筛选类型
   showToast: false,
   showModal: false,
   showGlobalBackgroundModal: false,
-  globalBackgroundImage: localStorage.getItem("globalBackgroundImage"),
+  globalBackgroundImage: "",
   activeTab: "", //当前组件类型
 });
+const storageGlobalImage = async (base64Data: string) => {
+  //清空所有背景图
+  await db.globalBackgroundImage.clear();
+  //设置背景图
+  await db.globalBackgroundImage.put({
+    picture: base64Data,
+  });
+};
 const showComponentList = computed(() => {
   if (info.filterType === "") {
     return AllComponentInfo;
@@ -90,9 +103,6 @@ const pinComponent = (compName: string) => {
     userStoreInfo.layout.unshift(userStoreInfo.layout.splice(index, 1)[0]);
   }
 };
-const saveLayout = () => {
-  localStorage.setItem("globalBackgroundImage", info.globalBackgroundImage);
-};
 const toggleModal = () => {
   info.showModal = !info.showModal;
 };
@@ -104,6 +114,7 @@ const triggerBackgroundUpload = () => {
   globalBackgroundInputRef.value.click();
 };
 const dlBackgroundUpload = () => {
+  //todo 清除背景图
   localStorage.removeItem("globalBackgroundImage");
   info.globalBackgroundImage = null;
 };
@@ -112,10 +123,9 @@ const setGlobalBackgroundImage = async (event: any) => {
   const file = event.target.files[0];
   if (file) {
     const result = await fileToBase64(file);
-    console.log("result", result);
     if (result.status) {
-      info.globalBackgroundImage = result.data.replace(/\s/g, encodeURIComponent(" "));
-      saveLayout();
+      await storageGlobalImage(result.data);
+      info.globalBackgroundImage = result.data;
     } else {
       console.error("error---", result.error);
     }
