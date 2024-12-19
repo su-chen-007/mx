@@ -41,15 +41,26 @@ const state = reactive({
 
 const {x, y, mx, my, arr, str, scroce} = toRefs(state)
 let timer = null, // 小球定时器
-    speed = 2,// 小球速度
+    speed = 6,// 小球速度
     map = {x: 10, y: 10},
     timer2 = null, // 挑战成功字眼显示定时器
     index = 0//挑战成功字眼续个显示的索引值
 
 const strFun = () => {
-  if (strArr.length === index) clearInterval(timer2)
-  state.str += strArr[index]
-  index++
+  // 检查 index 是否超出 strArr 的长度
+  if (index >= strArr.length) {
+    clearInterval(timer2); // 如果超出长度，清除定时器
+    return; // 停止函数执行
+  }
+
+  // 将 strArr 中的当前字符添加到 state.str
+  state.str += strArr[index];
+
+  // 打印日志，用于调试（可选）
+  console.log(`Displaying: ${strArr[index]}, Current str: ${state.str}`);
+
+  // 增加 index 以便下次调用时显示下一个字符
+  index++;
 }
 
 const moveBall = () => {

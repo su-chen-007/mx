@@ -65,6 +65,7 @@ import MyJsonPng from '@/assets/images/mycomponent/MyJson.png';
 import fhPng from '@/assets/images/mycomponent/fh.png';
 import lovePng from '@/assets/images/mycomponent/love.png';
 import ScorcePng from '@/assets/images/mycomponent/Scroce.png';
+import liuxingyu from '@/assets/images/mycomponent/3.gif';
 
 export default {
   components: {
@@ -100,7 +101,7 @@ export default {
       componentNames: [ '待办组件', '时间组件', '网页多开组件', '网址收藏组件', '自定榜单组件', '搜索组件', 'Json解析组件', '计算器组件', '动态爱心表白组件','推箱子游戏组件'],
       nextId: 0,
       showGlobalBackgroundModal: false,
-      globalBackgroundImage: '',
+      globalBackgroundImage: liuxingyu,
       activeTab: 'all'
     };
   },
