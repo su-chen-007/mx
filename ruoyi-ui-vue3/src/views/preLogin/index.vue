@@ -44,11 +44,15 @@
         <button class="delete-button" @click="removeComponent(comp)">✖</button>
       </div>
     </transition-group>
+    <!-- 底部备案信息 -->
     <!-- 文件输入用于上传全局背景 -->
     <input type="file" @change="setGlobalBackgroundImage" style="display: none" ref="globalBackgroundInputRef" />
     <div class="particle-background" v-if="!info.globalBackgroundImage">
       <!-- 粒子背景 -->
       <!--<ParticleBackground />-->
+    </div>
+    <div class="footer">
+      <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2024352002号</a>
     </div>
   </div>
 </template>
@@ -148,10 +152,6 @@ const setActiveTab = (type: any) => {
 </script>
 
 <style scoped>
-.container {
-  overflow-y: auto;
-  z-index: 10;
-}
 
 .particle-background {
   top: 0;
@@ -379,4 +379,29 @@ button {
   border-radius: 10%;
   z-index: 9999; /* 确保提示在最上面 */
 }
+
+.container {
+  position: relative;
+  overflow-y: auto;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.footer a {
+  color: #eaeaea;
+  text-decoration: none;
+}
+
+
 </style>
