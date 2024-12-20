@@ -1,19 +1,11 @@
 <template>
-  <div class="todo-container" :style="{ backgroundColor: containerColor, backgroundImage: backgroundImage ? `url(${backgroundImage})` : '' }">
+  <div class="todo-container" :style="{ backgroundImage: 'url(' + backgroundImage + ')' }">
     <div class="header">
       <input
         type="text"
         class="header-input"
         v-model="containerName"
         placeholder="自定义待办组件名"
-      />
-      <!-- 颜色选择按钮 -->
-      <button class="color-change-btn" @click="showColorPicker = true;">背景颜色选择</button>
-      <chrome-picker
-        v-if="showColorPicker"
-        v-model="containerColor"
-        class="color-picker"
-        @input="colorChanged"
       />
       <!-- 上传图片背景按钮 -->
       <button class="background-change-btn" @click="triggerFileInput">上传背景图片</button>
@@ -55,7 +47,9 @@
 </template>
 
 <script>
+import backgroundImagePng from '@/assets/images/mycomponent/toDoBG.png';
 import { Chrome } from 'vue-color';
+import db from "@/db/index";
 
 export default {
   name:"MyComponentTodoRecorder",
@@ -66,13 +60,23 @@ export default {
     return {
       newTodo: '',
       todos: [],
-      containerName: 'My Todo List',
-      containerColor: '#ea74b6', // 默认蓝色背景
+      containerName: '又是元气慢慢的一天！！！',
+      containerColor: '#ea74b6', // 默认背景颜色
       showColorPicker: false,
-      backgroundImage: '' // 存储背景图片的URL
+      backgroundImage: backgroundImagePng // 存储背景图片的URL
     };
   },
   methods: {
+    async restoreBackgroundImage() {
+      try {
+        const images = await db.ToDoRecorderGlobalBackgroundImage.toArray();
+        if (images.length > 0) {
+          this.backgroundImage = images[0].picture;
+        }
+      } catch (error) {
+        console.error('Error fetching background images from database:', error);
+      }
+    },
     addTodo() {
       if (this.newTodo.trim() !== '') {
         this.todos.push({
@@ -107,28 +111,51 @@ export default {
     setBackgroundImage(event) {
       const file = event.target.files[0];
       if (file) {
-        // 使用 URL.createObjectURL 创建文件的URL
-        this.backgroundImage = URL.createObjectURL(file);
-        this.containerColor = ''; // 选择图片背景时重置颜色
-        this.showColorPicker = false;
-        this.saveState();
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.backgroundImage = e.target.result;
+          console.log("存的" + e.target.result);
+          // 清除旧数据并存储新数据
+          db.ToDoRecorderGlobalBackgroundImage.clear()
+              .then(() => {
+                // 存储新的背景图片URL
+                return db.ToDoRecorderGlobalBackgroundImage.put({
+                  picture: e.target.result,
+                });
+              })
+              .then(() => {
+                // 确保数据写入后再读取
+                return db.ToDoRecorderGlobalBackgroundImage.toArray();
+              })
+              .then((images) => {
+                if (images.length > 0) {
+                  console.log("拿的" + images[0].picture);
+                } else {
+                  console.log("数据库中没有图片数据");
+                }
+              })
+              .catch((error) => {
+                console.error("数据库操作出错:", error);
+              });
+        };
+        reader.readAsDataURL(file);
       }
     },
     saveState() {
       localStorage.setItem('containerName', this.containerName);
       localStorage.setItem('containerColor', this.containerColor);
       localStorage.setItem('todos', JSON.stringify(this.todos));
-      localStorage.setItem('backgroundImage', this.backgroundImage);
     },
     restoreState() {
       this.containerName = localStorage.getItem('containerName') || 'My Todo List';
       this.containerColor = localStorage.getItem('containerColor') || '#ea74b6'; // 默认蓝色背景
       this.todos = JSON.parse(localStorage.getItem('todos')) || [];
-      this.backgroundImage = localStorage.getItem('backgroundImage') || '';
     }
   },
   mounted() {
-    this.restoreState();
+    this.restoreBackgroundImage().then(() => {
+      this.restoreState();
+    });
   },
   beforeDestroy() {
     // 释放背景图片的URL
