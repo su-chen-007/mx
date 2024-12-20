@@ -119,7 +119,7 @@ const triggerBackgroundUpload = () => {
   globalBackgroundInputRef.value.click();
 };
 const dlBackgroundUpload = () => {
-  //todo 清除背景图
+  db.globalBackgroundImage.clear();
   localStorage.removeItem("globalBackgroundImage");
   info.globalBackgroundImage = null;
 };
