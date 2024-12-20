@@ -9,6 +9,7 @@ import MyJsonPng from "./imagePreview/MyJson.png";
 import fhPng from "./imagePreview/fh.png";
 import lovePng from "./imagePreview/love.png";
 import ScorcePng from "./imagePreview/Scroce.png";
+import ClipBoard from "./imagePreview/clipboard.jpg";
 export enum ComponentCategory {
   normal, //普通组件
   ai, //ai组件
@@ -73,6 +74,12 @@ export const AllComponentInfo: AllComponentInfoProps[] = [
     name: "MyComponentScroceGame",
     label: "推箱子游戏组件",
     preview: ScorcePng,
+    type: ComponentCategory.normal,
+  },
+  {
+    name: "MyComponentClipboard",
+    label: "剪贴板",
+    preview: ClipBoard,
     type: ComponentCategory.normal,
   },
 ];
