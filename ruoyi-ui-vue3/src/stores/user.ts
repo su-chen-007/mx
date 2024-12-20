@@ -2,9 +2,10 @@ import { login, logout, getInfo } from "@/api/login";
 import type { LoginReq } from "@/api/login";
 import { getToken, setToken, removeToken } from "@/utils/auth";
 import { defineStore } from "pinia";
+import type { UserType } from "./types";
 
 const store = defineStore("user", {
-  state: () => {
+  state: (): UserType => {
     return {
       token: getToken(),
       name: "",
@@ -12,10 +13,10 @@ const store = defineStore("user", {
       phonenumber: "",
       email: "",
       avatar: "",
-      roles: [] as string[],
-      permissions: [] as string[],
+      roles: [],
+      permissions: [],
 
-      layout: [] as string[], //组件布局
+      layout: [], //组件布局
     };
   },
   getters: {

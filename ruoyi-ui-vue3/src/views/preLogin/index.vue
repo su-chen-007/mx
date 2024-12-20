@@ -10,7 +10,7 @@
       <div class="button-container">
         <button class="global-button" @click="toggleModal">MX</button>
         <button class="global-button" @click="triggerBackgroundUpload">BG</button>
-        <button class="global-button" @click="dlBackgroundUpload">DEBG</button>
+        <button class="global-button" @click="dlBackgroundUpload">清除缓存(有问题请点)</button>
       </div>
     </div>
 
@@ -38,10 +38,10 @@
 
     <!-- 动态添加的组件 -->
     <transition-group name="component-list" tag="div" class="components-container">
-      <div v-for="(compName, index) in userStoreInfo.layout" :key="index" class="component-wrapper">
-        <component :is="compName as string" @delete-component="removeComponent(compName)" />
-        <button class="delete-button1" @click="pinComponent(compName)">⬆︎</button>
-        <button class="delete-button" @click="removeComponent(compName)">✖</button>
+      <div v-for="(comp, index) in userStoreInfo.layout" :key="comp.id" class="component-wrapper">
+        <component :is="comp.name" @delete-component="removeComponent(comp)" />
+        <button class="delete-button1" @click="pinComponent(comp)">⬆︎</button>
+        <button class="delete-button" @click="removeComponent(comp)">✖</button>
       </div>
     </transition-group>
     <!-- 文件输入用于上传全局背景 -->
@@ -61,6 +61,8 @@ import userStore from "@/stores/user";
 import ParticleBackground from "@/components/MyComponents/ParticleBackground.vue";
 import { fileToBase64 } from "@/utils/file";
 import db from "@/db/index";
+import { ulid } from "ulid";
+import type { LayoutTypes } from "@/stores/types";
 const userStoreInfo = userStore();
 const globalBackgroundInputRef = ref();
 onMounted(async () => {
@@ -93,8 +95,10 @@ const showComponentList = computed(() => {
 });
 // 点击添加组件
 const handleAddComponent = (item: AllComponentInfoProps) => {
-  //@ts-ignore
-  userStoreInfo.layout.push(item.name);
+  userStoreInfo.layout.push({
+    name: item.name,
+    id: ulid(),
+  });
   info.toastMessage = "mx组件添加成功";
   info.showToast = true;
   setTimeout(() => {
@@ -102,8 +106,8 @@ const handleAddComponent = (item: AllComponentInfoProps) => {
   }, 1000); // 1秒后隐藏提示
 };
 // 将选中的组件移动到数组的第一个位置
-const pinComponent = (compName: string) => {
-  const index = userStoreInfo.layout.findIndex((item) => item === compName);
+const pinComponent = (comp: LayoutTypes) => {
+  const index = userStoreInfo.layout.findIndex((item) => item.id === comp.id);
   if (index !== -1) {
     userStoreInfo.layout.unshift(userStoreInfo.layout.splice(index, 1)[0]);
   }
@@ -112,15 +116,15 @@ const toggleModal = () => {
   info.showModal = !info.showModal;
 };
 //移除组件
-const removeComponent = (compName: string) => {
-  userStoreInfo.layout = userStoreInfo.layout.filter((item: any) => item !== compName);
+const removeComponent = (comp: LayoutTypes) => {
+  userStoreInfo.layout = userStoreInfo.layout.filter((item) => item.id !== comp.id);
 };
 const triggerBackgroundUpload = () => {
   globalBackgroundInputRef.value.click();
 };
 const dlBackgroundUpload = () => {
   db.globalBackgroundImage.clear();
-  localStorage.removeItem("globalBackgroundImage");
+  userStoreInfo.layout = [];
   info.globalBackgroundImage = null;
 };
 
