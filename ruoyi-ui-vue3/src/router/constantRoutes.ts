@@ -33,18 +33,25 @@ const constantRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/preLogin',
-    component: () => import('@/views/preLogin/index.vue'),
-    meta:{
-      hidden: true
-    }
+    path: "/preLogin",
+    component: () => import("@/views/preLogin/index.vue"),
+    meta: {
+      hidden: true,
+    },
   },
   {
-    path: '/test',
-    component: () => import('@/views/preLogin/index.vue'),
-    meta:{
-      hidden: true
-    }
+    path: "/prelogin",
+    component: () => import("@/views/preLogin/index.vue"),
+    meta: {
+      hidden: true,
+    },
+  },
+  {
+    path: "/test",
+    component: () => import("@/views/preLogin/index.vue"),
+    meta: {
+      hidden: true,
+    },
   },
   {
     path: "/redirect",

@@ -31,6 +31,7 @@ import { ElMessage } from "element-plus";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: routes,
+  strict: true,
 });
 
 //刷新后，重新加载缓存中的动态路由
@@ -38,7 +39,7 @@ const router = createRouter({
 
 // 是否显示重新登录
 export const isRelogin = { show: false };
-const whiteList = ["/login", "/register","/preLogin","/prelogin"];
+const whiteList = ["/login", "/register", "/preLogin", "/prelogin"];
 
 NProgress.configure({ showSpinner: false });
 
@@ -65,7 +66,7 @@ router.beforeEach((to, from, next) => {
             next({ ...to, replace: true }); // hack方法 确保addRoutes已完成
           })
           .catch((err) => {
-            console.error('捕捉到错误',err);
+            console.error("捕捉到错误", err);
             uStore.LogOut().then(() => {
               ElMessage.error(err);
               next({ path: "/login" });
@@ -81,7 +82,6 @@ router.beforeEach((to, from, next) => {
       // 在免登录白名单，直接进入
       next();
     } else {
-      console.log('141414',to.path);
       next(`/login?redirect=${to.fullPath}`); // 否则全部重定向到登录页
       NProgress.done();
     }

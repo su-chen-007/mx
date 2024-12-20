@@ -1,5 +1,10 @@
 <template>
   <div class="container" :style="{ backgroundImage: `url(${info.globalBackgroundImage})` }">
+    <!--<div class="flex gap-2 text-center">-->
+    <!--  <el-button>MX</el-button>-->
+    <!--  <el-button>BG</el-button>-->
+    <!--  <el-button>DE5BG</el-button>-->
+    <!--</div>-->
     <!-- 居中的横线和按钮 -->
     <div class="horizontal-line">
       <div class="button-container">
@@ -43,7 +48,7 @@
     <input type="file" @change="setGlobalBackgroundImage" style="display: none" ref="globalBackgroundInputRef" />
     <div class="particle-background" v-if="!info.globalBackgroundImage">
       <!-- 粒子背景 -->
-      <ParticleBackground />
+      <!--<ParticleBackground />-->
     </div>
   </div>
 </template>
@@ -59,7 +64,7 @@ import db from "@/db/index";
 const userStoreInfo = userStore();
 const globalBackgroundInputRef = ref();
 onMounted(async () => {
-  const picList = await db.globalBackgroundImage.toArray();
+  const picList = await db.globalBackgroundImage.limit(1).toArray();
   info.globalBackgroundImage = picList[0]?.picture;
 });
 const info = reactive<any>({
