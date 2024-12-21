@@ -1,18 +1,53 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.config.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.vitest.json"
-    }
-  ],
   "compilerOptions": {
-    "types": [  "vite/client" ],
-    "module": "esnext"
-  }
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": false,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "strictFunctionTypes": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "allowJs": false,
+    "resolveJsonModule": true,
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@build/*": [
+        "build/*"
+      ]
+    },
+    "types": [
+      "node",
+      "vite/client",
+      "element-plus/global",
+    ]
+  },
+  "include": [
+    "mock/*.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/**/*.d.ts",
+    "types/*.d.ts",
+    "vite.config.ts",
+    "*.d.ts"
+  ],
+  "exclude": [
+    "dist",
+    "**/*.js",
+    "node_modules"
+  ]
 }

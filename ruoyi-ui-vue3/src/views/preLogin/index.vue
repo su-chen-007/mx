@@ -152,7 +152,6 @@ const setActiveTab = (type: any) => {
 </script>
 
 <style scoped>
-
 .particle-background {
   top: 0;
   left: 0;
@@ -402,6 +401,4 @@ button {
   color: #eaeaea;
   text-decoration: none;
 }
-
-
 </style>
