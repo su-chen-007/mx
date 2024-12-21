@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { defineProps, computed } from 'vue';
+const truncatedContent = computed(() => {
+  return props.content.length > 20 ? props.content.substring(0, 20) + '...' : props.content;
+});
+
 const props = defineProps<{
   content: any;
 }>();
@@ -6,7 +11,7 @@ const props = defineProps<{
 
 <template>
   <div class="itemC">
-    <div class="itemC_list" v-html="content"></div>
+    <div class="itemC_list" v-html="truncatedContent"></div>
   </div>
 </template>
 

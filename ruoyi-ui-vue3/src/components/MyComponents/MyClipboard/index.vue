@@ -42,7 +42,7 @@ const handleClick = async (item) => {
 
 <template>
   <div class="myClipboard">
-    <div class="operation"><el-button @click="handlePaste">粘贴</el-button></div>
+    <div class="operation"><el-button @click="handlePaste">存储当前复制</el-button></div>
     <div class="wrapper">
       <!--列表-->
       <div class="item" v-for="(item, index) in clipList" :key="index">

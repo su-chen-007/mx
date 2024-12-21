@@ -78,7 +78,7 @@ export const AllComponentInfo: AllComponentInfoProps[] = [
   },
   {
     name: "MyComponentClipboard",
-    label: "剪贴板",
+    label: "剪贴板组件",
     preview: ClipBoard,
     type: ComponentCategory.normal,
   },
