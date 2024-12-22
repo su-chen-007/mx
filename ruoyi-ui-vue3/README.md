@@ -6,6 +6,20 @@
 admin admin123  
 工作流测试：zhangsan/admin123;lisi/admin123
 
+
+
+## 本地存储state
+* 使用`import { useStorage } from "@vueuse/core";`
+
+
+
+
+
+
+
+
+
+
 ## 功能说明
 
 工作台：我的流程、我的待办、我的已办  

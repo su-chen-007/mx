@@ -2,20 +2,21 @@
 import Item from "./Item/index.vue";
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
+import { useStorage } from "@vueuse/core";
 defineOptions({
   name: "MyComponentClipboard",
 });
 //剪贴板列表
-const clipList = ref([]);
+const clipList = useStorage("MyComponentClipboardState", []);
 //粘贴
 const handlePaste = async () => {
   try {
     const text = await navigator.clipboard.readText();
+    console.log("text", text);
     ElMessage({
       message: "粘贴成功",
       type: "success",
     });
-    console.log("内容", text);
     clipList.value.push(text);
   } catch (e) {
     ElMessage({
@@ -24,19 +25,9 @@ const handlePaste = async () => {
     });
   }
 };
-const handleClick = async (item) => {
-  try {
-    await navigator.clipboard.writeText(item);
-    ElMessage({
-      message: "复制成功",
-      type: "success",
-    });
-  } catch (e) {
-    ElMessage({
-      message: "请检查是否允许复制",
-      type: "error",
-    });
-  }
+//删除
+const handleDelete = (index: number) => {
+  clipList.value.splice(index, 1);
 };
 </script>
 
@@ -46,7 +37,7 @@ const handleClick = async (item) => {
     <div class="wrapper">
       <!--列表-->
       <div class="item" v-for="(item, index) in clipList" :key="index">
-        <Item :content="item" @click="handleClick(item)" />
+        <Item :content="item" :index="index" @delete="handleDelete" />
       </div>
     </div>
   </div>
@@ -57,7 +48,7 @@ const handleClick = async (item) => {
   width: 400px;
   height: 400px;
   border: 1px solid black;
-  background: white;
+  background: #d4dff2;
   display: flex;
   flex-direction: column;
   .operation {
