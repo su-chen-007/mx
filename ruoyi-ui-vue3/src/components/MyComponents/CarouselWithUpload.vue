@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, onUpdated, nextTick } from 'vue';
 defineOptions({
   name: "MyComponentCarouselWithUpload",
 });
@@ -35,20 +35,23 @@ const currentIndex = ref(0);
 // 文件输入框的引用
 const fileInput = ref(null);
 
-// 页面加载时从 localStorage 获取图片
-onMounted(() => {
-  const storedImages = JSON.parse(localStorage.getItem('carouselImages') || '[]');
-  images.value = storedImages;
-
-  // 启动自动滚动
-  startAutoScroll();
-});
+// 组件的 key，用于强制重新渲染
+const componentKey = ref(0);
 
 // 自动滚动的定时器 ID
 let autoScrollInterval = null;
 
+// 页面加载时从 localStorage 获取图片
+onMounted(() => {
+  const storedImages = JSON.parse(localStorage.getItem('carouselImages') || '[]');
+  images.value = storedImages;
+});
+
 // 启动自动滚动
 const startAutoScroll = () => {
+  if (autoScrollInterval) {
+    clearInterval(autoScrollInterval);
+  }
   autoScrollInterval = setInterval(() => {
     nextSlide();
   }, 3000); // 每 3 秒自动切换一张图片
@@ -74,28 +77,24 @@ const clearImages = () => {
   componentKey.value++; // 强制更新组件
 };
 
-// 组件的 key，用于强制重新渲染
-const componentKey = ref(0);
-
-// 监听图片列表的变化，更新 key
-watch(images, () => {
-  componentKey.value++;
-});
-
 // 处理文件上传
 const handleFileChange = (event) => {
   const files = event.target.files;
   const newImages = Array.from(files).map(file => URL.createObjectURL(file));
 
   // 将新图片加入到图片列表
-  images.value.push(...newImages);
+  images.value = newImages;
 
   // 更新 localStorage
   localStorage.setItem('carouselImages', JSON.stringify(images.value));
-  componentKey.value++; // 强制更新组件
-  // 启动自动滚动
-  startAutoScroll();
 };
+
+// 在组件数据更新且渲染完成后，检查并启动自动滚动等功能
+onUpdated(() => {
+  if (images.value.length > 0 &&!autoScrollInterval) {
+    startAutoScroll();
+  }
+});
 
 // 上一张
 const prevSlide = () => {
@@ -172,7 +171,7 @@ onBeforeUnmount(() => {
   object-fit: fill; /* 或者 contain，根据需求 */
 }
 
-.prev-button, .next-button {
+.prev-button,.next-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

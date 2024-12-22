@@ -19,7 +19,7 @@ defineOptions({
 const particleOptions = {
   background: {
     color: {
-      value: '#0d47a1'
+      value: 'rgba(3,3,3,0.72)'
     }
   },
   fpsLimit: 120,
