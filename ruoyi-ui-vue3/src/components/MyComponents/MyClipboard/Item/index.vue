@@ -33,16 +33,16 @@ const handleDelete = () => {
     <div class="itemC_list">
       {{ truncatedContent }}
       <div class="itemC_list_operation">
-        <el-popover placement="bottom" show-after="100" trigger="hover" :popper-style="{ minWidth: '40px', padding: 0, width: 'auto' }">
+        <el-popover placement="bottom" :show-after="100" trigger="hover" :popper-style="{ minWidth: '40px', padding: 0, width: 'auto' }">
           <template #reference>
             <el-icon><Edit /></el-icon>
           </template>
           <template #default>
             <div class="flex flex-col">
-              <el-tooltip content="复制" show-after="1000" placement="bottom">
+              <el-tooltip content="复制" :show-after="1000" placement="bottom">
                 <el-button type="primary" size="small" text :icon="CopyDocument" @click="handleCopy" />
               </el-tooltip>
-              <el-tooltip content="删除" show-after="1000" placement="bottom">
+              <el-tooltip content="删除" :show-after="1000" placement="bottom">
                 <el-button type="primary" size="small" style="margin-left: 0" text :icon="Delete" @click="handleDelete" />
               </el-tooltip>
             </div>
