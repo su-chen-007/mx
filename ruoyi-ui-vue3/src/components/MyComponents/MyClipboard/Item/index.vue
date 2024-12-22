@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, computed } from "vue";
+import { computed } from "vue";
 import { Delete, Edit, Search, Share, Upload, CopyDocument } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { Emits, Props } from "./types";
