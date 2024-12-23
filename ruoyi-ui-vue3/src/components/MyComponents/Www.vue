@@ -2,9 +2,9 @@
   <div class="bookmark-container">
     <div class="header">网址收藏夹</div>
     <div class="bookmarks">
-      <div class="bookmark" v-for="(bookmark, index) in bookmarks" :key="index" :style="{ backgroundImage:  `url(${handleImageBackGround(bookmark.url)})`,  backgroundRepeat: 'no-repeat',  backgroundPosition: 'center', backgroundSize: 'cover'}">
+      <div class="bookmark" @click="handleRouteToUrl($event,bookmark.url)" v-for="(bookmark, index) in bookmarks" :key="index" :style="{ backgroundImage:  `url(${handleImageBackGround(bookmark.url)})`,  backgroundRepeat: 'no-repeat',  backgroundPosition: 'center', backgroundSize: 'cover'}">
         <div class="delete-btn" @click="removeBookmark(index)">-</div>
-        <span v-if="!bookmark.isEditing" @dblclick="handleDb(index)" class="bookmark-name">{{ bookmark.name }}</span>
+        <span v-if="!bookmark.isEditing" @click.stop="handleEdit(index)" class="bookmark-name">{{ bookmark.name }}</span>
         <input
           v-else
           v-model="bookmark.name"
@@ -19,7 +19,7 @@
     <div class="add-modal" v-if="showAddBookmarkModal">
       <div class="form">
         <input v-model="newBookmark.name" placeholder="网址名称"/>
-        <input v-model="newBookmark.url" placeholder="网址" @input="generateRandomColor" />
+        <input v-model="newBookmark.url" placeholder="网址"/>
       </div>
       <div class="form-btn">
         <button @click="addBookmark" class="form-add-btn">添加</button>
@@ -52,13 +52,15 @@ export default {
     removeBookmark(index) {
       this.bookmarks.splice(index, 1);
     },
-    generateRandomColor() {
-      // 生成一个随机的十六进制颜色值
-      const randomColor = '#' + Math.floor(Math.random() * 16777777).toString(16);
-      this.newBookmark.color = randomColor;
+    // 点击跳转
+    handleRouteToUrl(e, url) {
+      if (e.target !== e.currentTarget) {
+        return
+      }
+      window.open(`https://${url}`, '_blank');
     },
-    // 双击名称
-    handleDb(index) {
+    // 点击修改
+    handleEdit(index) {
       this.bookmarks[index].isEditing = true;
       this.bookmarks = this.bookmarks.map((item, i) => {
         if (index !== i) {
@@ -76,8 +78,7 @@ export default {
     // 设置图片背景
     handleImageBackGround(url) {
       return `https://${url}/favicon.ico`
-
-    }
+    },
   }
 };
 </script>
