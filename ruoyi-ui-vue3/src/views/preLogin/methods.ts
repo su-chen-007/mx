@@ -10,6 +10,7 @@ import fhPng from "./imagePreview/fh.png";
 import lovePng from "./imagePreview/love.png";
 import ScorcePng from "./imagePreview/Scroce.png";
 import ClipBoard from "./imagePreview/clipboard.jpg";
+import CarouselWithUpload from "./imagePreview/CarouselWithUpload.jpg";
 export enum ComponentCategory {
   normal, //普通组件
   ai, //ai组件
@@ -80,6 +81,12 @@ export const AllComponentInfo: AllComponentInfoProps[] = [
     name: "MyComponentClipboard",
     label: "剪贴板组件",
     preview: ClipBoard,
+    type: ComponentCategory.normal,
+  },
+  {
+    name: "MyComponentCarouselWithUpload",
+    label: "轮播图片组件",
+    preview: CarouselWithUpload,
     type: ComponentCategory.normal,
   },
 ];

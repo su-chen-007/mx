@@ -134,7 +134,9 @@ const dlBackgroundUpload = () => {
   db.globalBackgroundImage.clear();
   userStoreInfo.layout = [];
   info.globalBackgroundImage = null;
-  localStorage.setItem('style.zoom',1)
+  localStorage.setItem('style.zoom','1');
+  info.zoomLevel=1;
+  (document.documentElement.style as any).zoom = info.zoomLevel;
 };
 
 const setGlobalBackgroundImage = async (event: any) => {
@@ -153,20 +155,15 @@ const setGlobalBackgroundImage = async (event: any) => {
 
 // 添加放大和缩小的方法
 const zoomIn = () => {
-  console.log('默认大小'+document.documentElement.style.zoom);
-  console.log('参数大小'+info.zoomLevel);
   info.zoomLevel += 0.1;
-  console.log('后参数大小'+info.zoomLevel);
-  document.documentElement.style.zoom = info.zoomLevel;
+  (document.documentElement.style as any).zoom = info.zoomLevel;
   localStorage.setItem('style.zoom',info.zoomLevel);
 };
 
 const zoomOut = () => {
-  console.log('默认大小'+document.documentElement.style.zoom);
   console.log('参数大小'+info.zoomLevel);
   info.zoomLevel -= 0.1;
-  console.log('后参数大小'+info.zoomLevel);
-  document.documentElement.style.zoom = info.zoomLevel;
+  (document.documentElement.style as any).zoom = info.zoomLevel;
   localStorage.setItem('style.zoom',info.zoomLevel);
 };
 
@@ -174,11 +171,9 @@ const zoomOut = () => {
 const resetZoom = () => {
   console.log('zoomLevel'+localStorage.getItem('style.zoom'))
   if(localStorage.getItem('style.zoom')!=null){
-    console.log(Number(localStorage.getItem('style.zoom')));
     info.zoomLevel = Number(localStorage.getItem('style.zoom'));
   }
-  console.log('zoomLevel2'+info.zoomLevel)
-  document.documentElement.style.zoom = info.zoomLevel;
+  (document.documentElement.style as any).zoom = info.zoomLevel;
 };
 
 

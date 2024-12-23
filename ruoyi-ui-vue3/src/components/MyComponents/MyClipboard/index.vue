@@ -56,7 +56,7 @@ const handleClick = async (item) => {
 .myClipboard {
   width: 400px;
   height: 400px;
-  border: 1px solid black;
+  border: 3px solid #5385ec;
   background: white;
   display: flex;
   flex-direction: column;
