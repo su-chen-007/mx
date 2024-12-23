@@ -19,7 +19,7 @@ defineOptions({
 const particleOptions = {
   background: {
     color: {
-      value: 'rgba(3,3,3,0.72)'
+      value: 'rgb(22,45,148)'
     }
   },
   fpsLimit: 120,
@@ -66,7 +66,7 @@ const particleOptions = {
       enable: true,
       outModes: 'bounce',
       random: false,
-      speed: 6,
+      speed: 2,
       straight: false
     },
     number: {

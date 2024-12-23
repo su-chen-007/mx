@@ -215,6 +215,9 @@ li {
 
 button {
   margin-left: 10px;
+  border: 1px solid #ccc; /* 按钮边框 */
+  border-radius: 5px; /* 圆角边框 */
+  background-color: #f0f0f0; /* 按钮背景色 */
 }
 
 .completed {

@@ -9,8 +9,10 @@
     <div class="horizontal-line">
       <div class="button-container">
         <button class="global-button" @click="toggleModal">MX</button>
-        <button class="global-button" @click="triggerBackgroundUpload">BG</button>
-        <button class="global-button" @click="dlBackgroundUpload">DEBG</button>
+        <button class="global-button" @click="triggerBackgroundUpload">背景</button>
+        <button class="global-button" @click="dlBackgroundUpload">还原</button>
+        <button class="global-button" @click="zoomIn">+</button> <!-- 放大按钮 -->
+        <button class="global-button" @click="zoomOut">-</button> <!-- 缩小按钮 -->
       </div>
     </div>
 
@@ -72,6 +74,7 @@ const globalBackgroundInputRef = ref();
 onMounted(async () => {
   const picList = await db.globalBackgroundImage.limit(1).toArray();
   info.globalBackgroundImage = picList[0]?.picture;
+  resetZoom();
 });
 const info = reactive<any>({
   toastMessage: "", //提示信息
@@ -81,6 +84,7 @@ const info = reactive<any>({
   showGlobalBackgroundModal: false,
   globalBackgroundImage: "",
   activeTab: "", //当前组件类型
+  zoomLevel: 1,
 });
 const storageGlobalImage = async (base64Data: string) => {
   //清空所有背景图
@@ -130,6 +134,9 @@ const dlBackgroundUpload = () => {
   db.globalBackgroundImage.clear();
   userStoreInfo.layout = [];
   info.globalBackgroundImage = null;
+  localStorage.setItem('style.zoom','1');
+  info.zoomLevel=1;
+  (document.documentElement.style as any).zoom = info.zoomLevel;
 };
 
 const setGlobalBackgroundImage = async (event: any) => {
@@ -144,6 +151,32 @@ const setGlobalBackgroundImage = async (event: any) => {
     }
   }
 };
+
+
+// 添加放大和缩小的方法
+const zoomIn = () => {
+  info.zoomLevel += 0.1;
+  (document.documentElement.style as any).zoom = info.zoomLevel;
+  localStorage.setItem('style.zoom',info.zoomLevel);
+};
+
+const zoomOut = () => {
+  console.log('参数大小'+info.zoomLevel);
+  info.zoomLevel -= 0.1;
+  (document.documentElement.style as any).zoom = info.zoomLevel;
+  localStorage.setItem('style.zoom',info.zoomLevel);
+};
+
+
+const resetZoom = () => {
+  console.log('zoomLevel'+localStorage.getItem('style.zoom'))
+  if(localStorage.getItem('style.zoom')!=null){
+    info.zoomLevel = Number(localStorage.getItem('style.zoom'));
+  }
+  (document.documentElement.style as any).zoom = info.zoomLevel;
+};
+
+
 //切换组件类型
 const setActiveTab = (type: any) => {
   info.filterType = type;
@@ -267,7 +300,8 @@ button {
   justify-content: center;
   overflow-y: auto;
   width: 100%;
-  height: calc(100vh - 100px); /* 假设你希望容器高度减去顶部的100px空间 */
+  height: auto;
+  /* 假设你希望容器高度减去顶部的100px空间 */
   z-index: 1; /* 设置合适的z-index */
 }
 
@@ -291,6 +325,9 @@ button {
   font-size: 9px;
   line-height: 1;
   border-radius: 2px;
+  border: 1px solid #ccc; /* 按钮边框 */
+  border-radius: 5px; /* 圆角边框 */
+  background-color: #f0f0f0; /* 按钮背景色 */
 }
 
 .delete-button {
@@ -303,6 +340,9 @@ button {
   font-size: 9px;
   line-height: 1;
   border-radius: 2px;
+  border: 1px solid #ccc; /* 按钮边框 */
+  border-radius: 5px; /* 圆角边框 */
+  background-color: #f0f0f0; /* 按钮背景色 */
 }
 
 .footer {
