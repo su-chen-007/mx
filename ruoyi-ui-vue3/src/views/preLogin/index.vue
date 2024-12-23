@@ -134,7 +134,10 @@ const dlBackgroundUpload = () => {
   db.globalBackgroundImage.clear();
   userStoreInfo.layout = [];
   info.globalBackgroundImage = null;
-  localStorage.setItem('style.zoom',1)
+  localStorage.setItem('style.zoom',1);
+  info.zoomLevel =1;
+  document.documentElement.style.zoom = info.zoomLevel;
+
 };
 
 const setGlobalBackgroundImage = async (event: any) => {
