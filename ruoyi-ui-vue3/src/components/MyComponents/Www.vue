@@ -1,20 +1,30 @@
 <template>
   <div class="bookmark-container">
-    <div class="header">网址收藏夹一</div>
+    <div class="header">网址收藏夹</div>
     <div class="bookmarks">
-      <div class="bookmark" v-for="(bookmark, index) in bookmarks" :key="index" :style="{ backgroundColor: bookmark.color }">
-        <a :href="bookmark.url" target="_blank">
-          <div class="bookmark-name">{{ bookmark.name }}</div>
-        </a>
-        <button class="delete-btn" @click="removeBookmark(index)">X</button>
+      <div class="bookmark" v-for="(bookmark, index) in bookmarks" :key="index" :style="{ backgroundImage:  `url(${handleImageBackGround(bookmark.url)})`,  backgroundRepeat: 'no-repeat',  backgroundPosition: 'center', backgroundSize: 'cover'}">
+        <div class="delete-btn" @click="removeBookmark(index)">-</div>
+        <span v-if="!bookmark.isEditing" @dblclick="handleDb(index)" class="bookmark-name">{{ bookmark.name }}</span>
+        <input
+          v-else
+          v-model="bookmark.name"
+          class="bookmark-name"
+          @blur="exitEditMode(index)"
+          @keyup.enter="exitEditMode(index)"
+          autofocus
+        />
       </div>
       <button class="add-btn" @click="showAddBookmarkModal = true">+</button>
     </div>
     <div class="add-modal" v-if="showAddBookmarkModal">
-      <input v-model="newBookmark.name" placeholder="网址名称" />
-      <input v-model="newBookmark.url" placeholder="网址" @input="generateRandomColor" />
-      <button @click="addBookmark">添加</button>
-      <button @click="showAddBookmarkModal = false">取消</button>
+      <div class="form">
+        <input v-model="newBookmark.name" placeholder="网址名称"/>
+        <input v-model="newBookmark.url" placeholder="网址" @input="generateRandomColor" />
+      </div>
+      <div class="form-btn">
+        <button @click="addBookmark" class="form-add-btn">添加</button>
+        <button @click="showAddBookmarkModal = false">取消</button>
+      </div>
     </div>
   </div>
 </template>
@@ -27,15 +37,15 @@ export default {
   data() {
     return {
       bookmarks: [],
-      newBookmark: { name: '', url: '', color: '#FFD700' }, // 默认颜色
-      showAddBookmarkModal: false
+      newBookmark: { name: '', url: '', color: '#FFD700', isEditing: false }, // 默认颜色
+      showAddBookmarkModal: false,
     };
   },
   methods: {
     addBookmark() {
       if (this.newBookmark.url.trim() !== '') {
         this.bookmarks.push({ ...this.newBookmark });
-        this.newBookmark = { name: '', url: '', color: '#FFD700' };
+        this.newBookmark = { name: '', url: '', color: '#FFD700', isEditing: false };
         this.showAddBookmarkModal = false;
       }
     },
@@ -44,8 +54,29 @@ export default {
     },
     generateRandomColor() {
       // 生成一个随机的十六进制颜色值
-      const randomColor = '#' + Math.floor(Math.random()*16777777).toString(16);
+      const randomColor = '#' + Math.floor(Math.random() * 16777777).toString(16);
       this.newBookmark.color = randomColor;
+    },
+    // 双击名称
+    handleDb(index) {
+      this.bookmarks[index].isEditing = true;
+      this.bookmarks = this.bookmarks.map((item, i) => {
+        if (index !== i) {
+          return { ...item, isEditing: false };
+        }
+        return { ...item, isEditing: true };
+      })
+    },
+    // 修改后失焦
+    exitEditMode(index) {
+      this.bookmarks = this.bookmarks.map((item, i) => {
+        return { ...item, isEditing: false };
+      })
+    },
+    // 设置图片背景
+    handleImageBackGround(url) {
+      return `https://${url}/favicon.ico`
+
     }
   }
 };
@@ -69,7 +100,6 @@ export default {
 .header {
   font-size: 24px;
   font-weight: bold;
-  border-bottom: 1px solid #ccc;
   padding-bottom: 10px;
 }
 
@@ -77,6 +107,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  align-items: center;
   margin: -10px;
   max-width: 100%;
 }
@@ -84,15 +115,16 @@ export default {
 .bookmark {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
   margin: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
   width: 100px;
   height: 100px;
-  overflow: hidden;
   transition: transform 0.3s ease;
+  border-radius:  50%;
+  position: relative;
 }
 
 .bookmark:hover {
@@ -107,28 +139,44 @@ export default {
 
 .bookmark-name {
   text-align: center;
-  font-size: 14px;
+  font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: 700;
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translate(-50%, 0)
 }
 
 .delete-btn {
-  margin: 10px 10px 10px 10px;
-  background: #f00;
-  color: #fff;
-  border: none;
+  width: 18px;
+  height: 18px;
+  background-color: #ffffff;
+  border: 1px solid red;
   border-radius: 50%;
-  padding: 2px;
+  color: red;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  top: 0;
+  right: 0;
   z-index: 10;
 }
 
+
 .add-btn {
+  width: 80px;
+  height: 80px;
   margin-left: auto;
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 5px;
   cursor: pointer;
 }
 
@@ -141,5 +189,19 @@ export default {
   background: white;
   padding: 20px;
   box-shadow: 0 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.form{
+  display: flex;
+  flex-direction: column;
+}
+
+.form-btn{
+  display: flex;
+  justify-content: center;
+}
+
+.form-add-btn {
+  margin-right: 10px;
 }
 </style>
