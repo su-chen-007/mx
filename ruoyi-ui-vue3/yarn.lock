@@ -7227,6 +7227,19 @@ vscode-uri@^3.0.8:
   resolved "https://registry.npmmirror.com/vscode-uri/-/vscode-uri-3.0.8.tgz#1770938d3e72588659a172d0fd4642780083ff9f"
   integrity sha512-AyFQ0EVmsOZOlAnxoFOGOq1SQDWAB7C6aqMGS23svWAllfOaxbuFvcT8D1i8z3Gyn8fraVeZNNmN6e9bxxXkKw==
 
+vtron@^0.7.6:
+  version "0.7.6"
+  resolved "https://registry.npmmirror.com/vtron/-/vtron-0.7.6.tgz#8a5ab3ec4e5f3d7df638db1890260ec6df26c4b0"
+  integrity sha512-XwM/p22r4uS208OfVD0C3UUV9CQfp0UmP2vwXFfogUrI7h+k15p85nlDNcfFuBTB05pcCmCunP+57vs191wy4A==
+  dependencies:
+    vue "^3.2.37"
+    vue-accessible-color-picker "^5.0.1"
+
+vue-accessible-color-picker@^5.0.1:
+  version "5.1.1"
+  resolved "https://registry.npmmirror.com/vue-accessible-color-picker/-/vue-accessible-color-picker-5.1.1.tgz#c12575fe1bea7fb107bc6baf0ecb5ae67562b018"
+  integrity sha512-vk+0OicECr58EnxaQ8h/MuYfzRLS7FgBGUkBVEiRy71j/XVPZ84QCwho2KsURGeoDSr16ELI1+Ao3Hqp2PPCHw==
+
 vue-color@^2.8.1:
   version "2.8.1"
   resolved "https://registry.npmmirror.com/vue-color/-/vue-color-2.8.1.tgz#a090f3dcf8ed6f07afdb865cac84b19a73302e70"
@@ -7291,7 +7304,7 @@ vue@^2.0.0, vue@^2.2.6:
     "@vue/compiler-sfc" "2.7.16"
     csstype "^3.1.0"
 
-vue@^3.3.13, vue@^3.5.13, vue@~3.5.13:
+vue@^3.2.37, vue@^3.3.13, vue@^3.5.13, vue@~3.5.13:
   version "3.5.13"
   resolved "https://registry.npmmirror.com/vue/-/vue-3.5.13.tgz#9f760a1a982b09c0c04a867903fc339c9f29ec0a"
   integrity sha512-wmeiSMxkZCSc+PM2w2VRsOYAZC8GdipNFRTsLSfodVqI9mbejKeXEGr8SckuLnrQPGe3oJN5c3K0vpoU9q/wCQ==

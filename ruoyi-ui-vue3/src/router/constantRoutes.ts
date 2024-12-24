@@ -40,6 +40,13 @@ const constantRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/window",
+    component: () => import("@/views/window/index.vue"),
+    meta: {
+      hidden: true,
+    },
+  },
+  {
     path: "/prelogin",
     component: () => import("@/views/preLogin/index.vue"),
     meta: {

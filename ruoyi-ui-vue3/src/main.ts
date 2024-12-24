@@ -13,6 +13,8 @@ import "virtual:svg-icons-register";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 // 一定要在main.ts中导入tailwind.css，防止vite每次hmr都会请求src/style/index.scss整体css文件导致热更新慢的问题
 import "@/assets/styles/tailwind.css";
+import "vtron/distlib/style.css";
+
 const app = createApp(App);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);

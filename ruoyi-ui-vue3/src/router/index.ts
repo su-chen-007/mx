@@ -39,7 +39,7 @@ const router = createRouter({
 
 // 是否显示重新登录
 export const isRelogin = { show: false };
-const whiteList = ["/login", "/register", "/preLogin", "/prelogin"];
+const whiteList = ["/login", "/register", "/preLogin", "/prelogin", "/window"];
 
 NProgress.configure({ showSpinner: false });
 
