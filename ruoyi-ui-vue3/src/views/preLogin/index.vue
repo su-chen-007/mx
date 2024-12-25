@@ -11,8 +11,10 @@
         <button class="global-button" @click="toggleModal">MX</button>
         <button class="global-button" @click="triggerBackgroundUpload">背景</button>
         <button class="global-button" @click="dlBackgroundUpload">还原</button>
-        <button class="global-button" @click="zoomIn">+</button> <!-- 放大按钮 -->
-        <button class="global-button" @click="zoomOut">-</button> <!-- 缩小按钮 -->
+        <button class="global-button" @click="zoomIn">+</button>
+        <!-- 放大按钮 -->
+        <button class="global-button" @click="zoomOut">-</button>
+        <!-- 缩小按钮 -->
       </div>
     </div>
 
@@ -51,7 +53,7 @@
     <input type="file" @change="setGlobalBackgroundImage" style="display: none" ref="globalBackgroundInputRef" />
     <div class="particle-background" v-if="!info.globalBackgroundImage">
       <!-- 粒子背景 -->
-      <ParticleBackground />
+      <!--<ParticleBackground />-->
     </div>
     <div class="footer">
       <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2024352002号</a>
@@ -134,8 +136,8 @@ const dlBackgroundUpload = () => {
   db.globalBackgroundImage.clear();
   userStoreInfo.layout = [];
   info.globalBackgroundImage = null;
-  localStorage.setItem('style.zoom','1');
-  info.zoomLevel=1;
+  localStorage.setItem("style.zoom", "1");
+  info.zoomLevel = 1;
   (document.documentElement.style as any).zoom = info.zoomLevel;
 };
 
@@ -152,30 +154,27 @@ const setGlobalBackgroundImage = async (event: any) => {
   }
 };
 
-
 // 添加放大和缩小的方法
 const zoomIn = () => {
   info.zoomLevel += 0.1;
   (document.documentElement.style as any).zoom = info.zoomLevel;
-  localStorage.setItem('style.zoom',info.zoomLevel);
+  localStorage.setItem("style.zoom", info.zoomLevel);
 };
 
 const zoomOut = () => {
-  console.log('参数大小'+info.zoomLevel);
+  console.log("参数大小" + info.zoomLevel);
   info.zoomLevel -= 0.1;
   (document.documentElement.style as any).zoom = info.zoomLevel;
-  localStorage.setItem('style.zoom',info.zoomLevel);
+  localStorage.setItem("style.zoom", info.zoomLevel);
 };
 
-
 const resetZoom = () => {
-  console.log('zoomLevel'+localStorage.getItem('style.zoom'))
-  if(localStorage.getItem('style.zoom')!=null){
-    info.zoomLevel = Number(localStorage.getItem('style.zoom'));
+  console.log("zoomLevel" + localStorage.getItem("style.zoom"));
+  if (localStorage.getItem("style.zoom") != null) {
+    info.zoomLevel = Number(localStorage.getItem("style.zoom"));
   }
   (document.documentElement.style as any).zoom = info.zoomLevel;
 };
-
 
 //切换组件类型
 const setActiveTab = (type: any) => {

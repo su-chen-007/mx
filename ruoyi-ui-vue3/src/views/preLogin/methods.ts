@@ -11,6 +11,7 @@ import lovePng from "./imagePreview/love.png";
 import ScorcePng from "./imagePreview/Scroce.png";
 import ClipBoard from "./imagePreview/clipboard.jpg";
 import CarouselWithUpload from "./imagePreview/CarouselWithUpload.jpg";
+import MyRelationshipBg from "./imagePreview/MyRelationship.png";
 export enum ComponentCategory {
   normal, //普通组件
   ai, //ai组件
@@ -87,6 +88,12 @@ export const AllComponentInfo: AllComponentInfoProps[] = [
     name: "MyComponentCarouselWithUpload",
     label: "家的照片轮播组件",
     preview: CarouselWithUpload,
+    type: ComponentCategory.normal,
+  },
+  {
+    name: "MyRelationship",
+    label: "称呼计算器",
+    preview: MyRelationshipBg,
     type: ComponentCategory.normal,
   },
 ];
