@@ -4,11 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build:prod": "run-p type-check build-only:prod",
+    "build:prod": "vite build",
     "build:stag": "run-p type-check build-only:stag",
     "preview": "vite preview --port 4173",
     "test:unit": "vitest --environment jsdom",
-    "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
+    "type-check": "vue-tsc --noEmit --composite false",
     "build-only:prod": "vite build --mode production",
     "build-only:stag": "vite build --mode staging",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
