@@ -20,7 +20,7 @@ const passwords = ref<PasswordsTypes[]>([]);
 const checkList = ref<SecretType[]>([SecretType.UpperLetter, SecretType.LowerLetter, SecretType.Number]);
 // 用户自定义的设置
 const userSetting = ref({
-  length: 8,
+  length: 16,
   num: 10,
   omitString: "", // 默认排除一些常见易混淆字符
 });
@@ -104,7 +104,7 @@ const getAvailableChars = () => {
 };
 //添加排除字符
 const handleAddOmitStr = () => {
-  userSetting.value.omitString += "0OoIl1";
+  userSetting.value.omitString = "0OoIl1";
 };
 // 触发密码生成
 const onGenerate = () => {
@@ -149,8 +149,10 @@ const onCopyAll = () => {
       </div>
     </div>
     <!-- 显示生成的密码 -->
-    <div>
-      <el-table-v2 :columns="tableColumns" :data="passwords" :width="580" :height="200" />
+    <div v-if="passwords.length">
+      <el-table-v2 :columns="tableColumns" :data="passwords" :width="580" :height="200">
+        <template #empty><div class="text-center">数据为空</div></template>
+      </el-table-v2>
     </div>
   </div>
 </template>
@@ -160,6 +162,7 @@ const onCopyAll = () => {
   width: 600px;
   padding: 10px;
   background-color: white;
+  overflow: hidden;
   .item {
     display: flex;
     justify-content: center;
