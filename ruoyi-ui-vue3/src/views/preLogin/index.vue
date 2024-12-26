@@ -53,7 +53,7 @@
     <input type="file" @change="setGlobalBackgroundImage" style="display: none" ref="globalBackgroundInputRef" />
     <div class="particle-background" v-if="!info.globalBackgroundImage">
       <!-- 粒子背景 -->
-      <!--<ParticleBackground />-->
+      <ParticleBackground />
     </div>
     <div class="footer">
       <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2024352002号</a>

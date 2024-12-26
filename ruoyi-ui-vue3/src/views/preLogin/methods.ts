@@ -102,4 +102,10 @@ export const AllComponentInfo: AllComponentInfoProps[] = [
     preview: MyRelationshipBg,
     type: ComponentCategory.normal,
   },
+  {
+    name: "MyRandomSecretGenerate",
+    label: "随机密码生成",
+    preview: MyRelationshipBg,
+    type: ComponentCategory.normal,
+  },
 ];
