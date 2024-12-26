@@ -89,4 +89,10 @@ export const AllComponentInfo: AllComponentInfoProps[] = [
     preview: CarouselWithUpload,
     type: ComponentCategory.normal,
   },
+  {
+    name: "AiWindowComponent",
+    label: "ai组件",
+    preview: CarouselWithUpload,
+    type: ComponentCategory.normal,
+  },
 ];
