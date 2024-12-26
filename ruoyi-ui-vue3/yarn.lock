@@ -2525,6 +2525,11 @@ check-error@^2.1.1:
   resolved "https://registry.npmmirror.com/check-error/-/check-error-2.1.1.tgz#87eb876ae71ee388fa0471fe423f494be1d96ccc"
   integrity sha512-OAlb+T7V4Op9OwdkjmguYRqncdlx5JiofwOAUkmTF+jNdHwzTaTs4sRAGpzLF3oOz5xAyDGrPgeIDFQmDOTiJw==
 
+chinese-conv@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.npmmirror.com/chinese-conv/-/chinese-conv-3.2.2.tgz#88eb375140e4b42654c7ec9ed900b6e2b21fdf46"
+  integrity sha512-tv/he3PX7Uo+ySYVdKy3t/vhx7zdZoshS2HGLWOqotfVaR5hK5f6rsJeU2vAXeCRgzRxpW52LcN3CtinVDPEeQ==
+
 chokidar@^3.6.0:
   version "3.6.0"
   resolved "https://registry.npmmirror.com/chokidar/-/chokidar-3.6.0.tgz#197c6cc669ef2a8dc5e7b4d97ee4e092c3eb0d5b"

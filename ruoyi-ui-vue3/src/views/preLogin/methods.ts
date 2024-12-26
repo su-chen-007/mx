@@ -96,4 +96,10 @@ export const AllComponentInfo: AllComponentInfoProps[] = [
     preview: MyRelationshipBg,
     type: ComponentCategory.normal,
   },
+  {
+    name: "MySimpleToTradition",
+    label: "简繁转换",
+    preview: MyRelationshipBg,
+    type: ComponentCategory.normal,
+  },
 ];

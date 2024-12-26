@@ -34,6 +34,7 @@
     "bpmn-js-properties-panel": "^5.30.0",
     "camunda-bpmn-js-behaviors": "^1.9.0",
     "camunda-bpmn-moddle": "^7.0.1",
+    "chinese-conv": "^3.2.2",
     "dexie": "^4.0.10",
     "diagram-js": "^15.2.4",
     "echarts": "^5.5.1",
