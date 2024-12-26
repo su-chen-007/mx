@@ -4,6 +4,7 @@ import { SecretType } from "./methods";
 import { PasswordsTypes } from "./types";
 import { copyTxt } from "@/utils/txt";
 import { AnyColumn } from "element-plus/es/components/table-v2/src/common";
+import { useStorage } from "@vueuse/core";
 defineOptions({
   name: "MyRandomSecretGenerate",
 });
@@ -19,7 +20,7 @@ const passwords = ref<PasswordsTypes[]>([]);
 // 设置选中的选项
 const checkList = ref<SecretType[]>([SecretType.UpperLetter, SecretType.LowerLetter, SecretType.Number]);
 // 用户自定义的设置
-const userSetting = ref({
+const userSetting = useStorage("MyRandomSecretGenerate", {
   length: 16,
   num: 10,
   omitString: "", // 默认排除一些常见易混淆字符
