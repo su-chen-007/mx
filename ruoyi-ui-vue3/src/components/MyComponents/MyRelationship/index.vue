@@ -99,10 +99,7 @@ const handleReset = () => {
   userInput.value = [];
   outPut.value = [];
 };
-//切换称呼结果
-const handleSwitchHeader = () => {
-  isReverse.value = !isReverse.value;
-};
+
 //结果
 const handleResult = () => {
   let result = relationship({
@@ -112,6 +109,13 @@ const handleResult = () => {
   });
   console.log("result", result);
   switchResult(result);
+};
+//切换称呼结果
+const handleSwitchHeader = () => {
+  isReverse.value = !isReverse.value;
+  //如果有结果,则再次计算一次
+  userInput.value = cloneDeep(outPut.value);
+  handleResult();
 };
 //跳转百度
 const handleGoToBaidu = () => {
