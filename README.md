@@ -1,6 +1,6 @@
-
-## 平台简介
-mx平台采取了开源的ruoyi框架
+## mx平台简介
+mx平台采取了开源的ruoyi框架，主要实现了由ai自动化编写的组件应用一体式的服务
+可直接访问 https://suchenensiya.online 进行体验
 * 前端采用Vue、Element UI。
 * 后端采用Spring Boot、Spring Security、Redis & Jwt。
 * 权限认证使用Jwt，支持多终端认证系统。
