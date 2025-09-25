@@ -37,7 +37,7 @@ It enables efficient development: the code generator allows one-click generation
   </tr>
   <tr>
     <td align="center">
-      <img src="https://newpandafamily.com/images/mx/mx2.png" alt="MX平台演示图2" style="max-width:100%; height:auto;">
+      <img src="https://newpandafamily.com/images/mx/mx5.png" alt="MX平台演示图2" style="max-width:100%; height:auto;">
     </td>
   </tr>
   <tr>
