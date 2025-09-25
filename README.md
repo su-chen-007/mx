@@ -27,17 +27,27 @@ It enables efficient development: the code generator allows one-click generation
 
 
 ## Demo Diagram
-<table>
-    <tr>
-        <td><img src="https://newpandafamily.com/images/mx/mx1.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://newpandafamily.com/images/mx/mx2.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://newpandafamily.com/images/mx/mx3.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://newpandafamily.com/images/mx/mx4.png"/></td>
-    </tr>
+<table >
+  <!-- border="0" 隐藏边框，width="100%" 占满容器，cellpadding="10" 给图片加内边距 -->
+  <tr>
+    <td align="center"> <!-- 单元格内容居中 -->
+      <img src="https://newpandafamily.com/images/mx/mx1.png" alt="MX平台演示图1" style="max-width:100%; height:auto;">
+      <!-- alt: 无障碍替代文本；style: 图片自适应容器，避免溢出 -->
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://newpandafamily.com/images/mx/mx2.png" alt="MX平台演示图2" style="max-width:100%; height:auto;">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://newpandafamily.com/images/mx/mx3.png" alt="MX平台演示图3" style="max-width:100%; height:auto;">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://newpandafamily.com/images/mx/mx4.png" alt="MX平台演示图4" style="max-width:100%; height:auto;">
+    </td>
+  </tr>
 </table>
